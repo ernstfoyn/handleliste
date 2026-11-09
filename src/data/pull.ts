@@ -26,7 +26,10 @@ function signatureOf(parts: unknown): string {
  * Full pull er bevisst valgt i MVP: datasettet er lite, og det gjør
  * sletting/RLS/reconnect vesentlig enklere å få riktig enn inkrementell merge.
  */
-export async function pullAll(shouldApply: () => boolean = () => true): Promise<boolean> {
+export async function pullAll(
+  userId: string,
+  shouldApply: () => boolean = () => true,
+): Promise<boolean> {
   if (!supabase) return false;
 
   const [
@@ -127,6 +130,32 @@ export async function pullAll(shouldApply: () => boolean = () => true): Promise<
 
       await db.householdMembers.clear();
       await db.householdMembers.bulkPut(remoteHouseholdMembers);
+
+      // Reparer ventende lister som ble opprettet mot en gammel/feil husstand
+      // (typisk etter bytte mellom gjest og e-post på samme enhet).
+      const myHouseholdIds = new Set(
+        remoteHouseholdMembers
+          .filter((member) => member.userId === userId)
+          .map((member) => member.householdId),
+      );
+      const fallbackHouseholdId = [...myHouseholdIds][0];
+      if (fallbackHouseholdId) {
+        const pendingListInserts = await db.outbox
+          .where('kind')
+          .equals('list.insert')
+          .toArray();
+        for (const entry of pendingListInserts) {
+          if (entry.kind !== 'list.insert') continue;
+          if (myHouseholdIds.has(entry.payload.list.householdId)) continue;
+
+          const repairedList = {
+            ...entry.payload.list,
+            householdId: fallbackHouseholdId,
+          };
+          await db.lists.put(repairedList);
+          await db.outbox.put({ ...entry, payload: { list: repairedList } });
+        }
+      }
 
       await db.catalog.clear();
       await db.catalog.bulkPut(remoteCatalog);
