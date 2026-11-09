@@ -109,8 +109,9 @@ class SyncEngine {
       do {
         this.pullAgain = false;
         try {
-          const changed = await pullAll(this.userId ?? '', () =>
-            generation === this.generation && this.userId !== null,
+          const changed = await pullAll(
+            this.userId ?? '',
+            () => generation === this.generation && this.userId !== null,
           );
           if (generation !== this.generation) return;
           const store = useSyncStore.getState();
