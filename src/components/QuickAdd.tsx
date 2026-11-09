@@ -100,7 +100,7 @@ export function QuickAdd({
 
   return (
     <form
-      className="card relative z-20 p-2.5 sm:p-3"
+      className="relative z-20 rounded-[28px] border border-white/5 bg-ink p-2.5 text-paper shadow-card dark:border-white/10 dark:bg-[#1A1A1A] sm:p-3"
       onSubmit={(event) => void handleSubmit(event)}
       autoComplete="off"
     >
@@ -112,7 +112,7 @@ export function QuickAdd({
           <input
             ref={inputRef}
             id="quick-add-name"
-            className="field h-12 border-transparent bg-stone-50 pr-10 text-base shadow-inner dark:border-transparent dark:bg-stone-800/80"
+            className="field h-12 border-white/10 bg-white/10 pr-10 text-base text-paper shadow-none placeholder:text-paper/40 focus:border-white/30 focus:ring-white/10 dark:border-white/10 dark:bg-white/10"
             placeholder="Skriv en vare …"
             value={name}
             onChange={(event) => {
@@ -146,7 +146,7 @@ export function QuickAdd({
               id="quick-add-suggestions"
               role="listbox"
               aria-label="Forslag fra historikken"
-              className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-2xl border border-stone-200 bg-white py-1 shadow-lift dark:border-stone-700 dark:bg-stone-900"
+              className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-3xl border border-ink/10 bg-paper py-1 text-ink shadow-card dark:border-white/10 dark:bg-[#1A1A1A] dark:text-paper"
             >
               {suggestions.map((suggestion, index) => (
                 <li
@@ -156,15 +156,15 @@ export function QuickAdd({
                   aria-selected={activeIndex === index}
                   className={`flex min-h-12 cursor-pointer items-center justify-between gap-3 px-3.5 text-left text-sm ${
                     activeIndex === index
-                      ? 'bg-brand-50 text-brand-900 dark:bg-brand-950/60 dark:text-brand-100'
-                      : 'text-stone-800 dark:text-stone-100'
+                      ? 'bg-mint-100 text-ink dark:bg-mint-950 dark:text-mint-100'
+                      : 'text-ink/80 dark:text-paper/80'
                   }`}
                   onMouseDown={(event) => event.preventDefault()}
                   onMouseEnter={() => setActiveIndex(index)}
                   onClick={() => void submitName(suggestion.displayName)}
                 >
                   <span className="truncate font-medium">{suggestion.displayName}</span>
-                  <span className="shrink-0 text-xs text-stone-500 dark:text-stone-400">
+                  <span className="shrink-0 text-xs text-ink/45 dark:text-paper/45">
                     {suggestion.useCount === 0
                       ? 'Nylig'
                       : suggestion.useCount === 1
@@ -176,7 +176,11 @@ export function QuickAdd({
             </ul>
           ) : null}
         </div>
-        <button type="submit" className="btn btn-primary h-12 px-4" disabled={!name.trim() || busy}>
+        <button
+          type="submit"
+          className="btn h-12 shrink-0 rounded-full bg-paper px-4 text-ink hover:bg-paper/90 dark:bg-paper dark:text-ink"
+          disabled={!name.trim() || busy}
+        >
           <svg
             viewBox="0 0 24 24"
             className="h-5 w-5"
@@ -195,7 +199,7 @@ export function QuickAdd({
       <div className="mt-1.5 flex items-center justify-between gap-2 px-1">
         <button
           type="button"
-          className="inline-flex min-h-11 items-center gap-1 rounded-lg px-1.5 text-xs font-medium text-stone-500 transition-colors hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100"
+          className="inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-xs font-medium text-paper/55 transition-colors hover:text-paper"
           onClick={() => setDetailsOpen((open) => !open)}
           aria-expanded={detailsOpen}
           aria-controls="quick-add-details"
@@ -213,22 +217,22 @@ export function QuickAdd({
           Mengde og notat
         </button>
         {name.trim() ? (
-          <span className="text-xs text-stone-500 dark:text-stone-400">Enter for å legge til</span>
+          <span className="text-xs text-paper/35">Enter for å legge til</span>
         ) : null}
       </div>
 
       {detailsOpen ? (
         <div
           id="quick-add-details"
-          className="mt-2 grid gap-2 border-t border-stone-200/80 pt-3 dark:border-stone-800 sm:grid-cols-[10rem_1fr]"
+          className="mt-2 grid gap-2 border-t border-white/10 pt-3 sm:grid-cols-[10rem_1fr]"
         >
           <div>
-            <label className="label mb-1 block text-xs" htmlFor="quick-add-quantity">
+            <label className="mb-1 block text-xs font-medium text-paper/50" htmlFor="quick-add-quantity">
               Mengde
             </label>
             <input
               id="quick-add-quantity"
-              className="field h-11 text-sm"
+              className="field h-11 border-white/10 bg-white/10 text-sm text-paper placeholder:text-paper/35 dark:border-white/10 dark:bg-white/10"
               placeholder="f.eks. 2 stk"
               value={quantity}
               onChange={(event) => setQuantity(event.target.value)}
@@ -237,12 +241,12 @@ export function QuickAdd({
             />
           </div>
           <div>
-            <label className="label mb-1 block text-xs" htmlFor="quick-add-note">
+            <label className="mb-1 block text-xs font-medium text-paper/50" htmlFor="quick-add-note">
               Notat
             </label>
             <input
               id="quick-add-note"
-              className="field h-11 text-sm"
+              className="field h-11 border-white/10 bg-white/10 text-sm text-paper placeholder:text-paper/35 dark:border-white/10 dark:bg-white/10"
               placeholder="Valgfritt"
               value={note}
               onChange={(event) => setNote(event.target.value)}

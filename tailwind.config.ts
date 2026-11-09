@@ -6,6 +6,49 @@ export default {
   theme: {
     extend: {
       colors: {
+        ink: '#111111',
+        paper: '#F7F3EC',
+        cream: '#F7F3EC',
+        mint: {
+          50: '#F1FAF4',
+          100: '#DDF3E4',
+          200: '#C3E9D2',
+          300: '#A4D9BA',
+          700: '#1F5C3F',
+          950: '#10291D',
+        },
+        blush: {
+          50: '#FDF4F7',
+          100: '#F7DCE6',
+          200: '#F0C6D6',
+          300: '#E4A8BF',
+          700: '#7A2E4A',
+          950: '#2B111B',
+        },
+        lilac: {
+          50: '#F8F5FE',
+          100: '#E9E1F8',
+          200: '#DBCEF3',
+          300: '#C5B1E8',
+          700: '#4A3278',
+          950: '#1B122B',
+        },
+        butter: {
+          50: '#FEFAF0',
+          100: '#F7ECCB',
+          200: '#F0E0AC',
+          300: '#E6D184',
+          700: '#6B5514',
+          950: '#261F07',
+        },
+        sky: {
+          50: '#F3F8FC',
+          100: '#DCEAF6',
+          200: '#C8DEF0',
+          300: '#A9C9E3',
+          700: '#1F4D6B',
+          950: '#0C1C28',
+        },
         brand: {
           50: '#eef9f2',
           100: '#d7f1e1',
@@ -19,8 +62,6 @@ export default {
           900: '#133e2c',
           950: '#092319',
         },
-        cream: '#faf7f0',
-        ink: '#1b2a23',
       },
       fontFamily: {
         sans: [
@@ -34,6 +75,8 @@ export default {
           'sans-serif',
         ],
         display: [
+          'Bodoni 72',
+          'Didot',
           'Iowan Old Style',
           'Palatino Linotype',
           'Palatino',
@@ -42,9 +85,13 @@ export default {
           'serif',
         ],
       },
+      borderRadius: {
+        '4xl': '2rem',
+      },
       boxShadow: {
-        soft: '0 18px 45px -24px rgba(18, 63, 44, 0.35)',
-        lift: '0 8px 24px -12px rgba(18, 63, 44, 0.28)',
+        soft: '0 24px 60px -34px rgba(17, 17, 17, 0.45)',
+        lift: '0 14px 34px -18px rgba(17, 17, 17, 0.35)',
+        card: '0 22px 50px -38px rgba(17, 17, 17, 0.55)',
       },
       keyframes: {
         'toast-in': {

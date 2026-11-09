@@ -90,7 +90,7 @@ export function Dialog({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-stone-950/45 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/45 p-0 backdrop-blur-sm sm:items-center sm:p-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -102,13 +102,13 @@ export function Dialog({
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
-        className={`animate-slide-up max-h-[92dvh] w-full overflow-y-auto rounded-t-3xl border border-stone-200 bg-cream p-5 shadow-lift dark:border-stone-800 dark:bg-stone-900 sm:rounded-3xl sm:p-6 ${width}`}
+        className={`animate-slide-up max-h-[92dvh] w-full overflow-y-auto rounded-t-[32px] border border-ink/10 bg-paper p-5 text-ink shadow-card dark:border-white/10 dark:bg-[#171717] dark:text-paper sm:rounded-[32px] sm:p-6 ${width}`}
       >
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2
               id={titleId}
-              className="font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50"
+              className="font-display text-3xl font-semibold tracking-tight text-ink dark:text-paper"
             >
               {title}
             </h2>

@@ -38,26 +38,31 @@ async function touchList(listId: string, userId: string, now: string): Promise<v
   await db.lists.update(listId, { updatedAt: now, updatedBy: userId });
 }
 
-async function findHouseholdId(): Promise<string> {
-  let household = await db.households.toCollection().first();
-  if (!household) {
-    try {
-      await ensureBootstrap();
-      await syncEngine.pullNow();
-    } catch (error) {
-      console.warn('Bootstrap feilet', error);
-    }
-    household = await db.households.toCollection().first();
+async function findHouseholdId(userId: string): Promise<string> {
+  // Bruk husstanden der brukeren faktisk har et medlemskap. Etter bytte mellom
+  // gjest/e-post kan IndexedDB inneholde en gammel husstand fra en annen konto;
+  // den vil RLS avvise insert i.
+  const localMembership = await db.householdMembers.where('userId').equals(userId).first();
+  if (localMembership) return localMembership.householdId;
+
+  try {
+    await ensureBootstrap();
+    await syncEngine.pullNow();
+  } catch (error) {
+    console.warn('Bootstrap feilet', error);
   }
-  if (!household) {
-    throw new Error('Fant ingen husholdning. Sjekk at Supabase er konfigurert og tilgjengelig.');
-  }
-  return household.id;
+
+  const refreshedMembership = await db.householdMembers.where('userId').equals(userId).first();
+  if (refreshedMembership) return refreshedMembership.householdId;
+
+  throw new Error(
+    'Fant ingen husholdning for brukeren. Sjekk at Supabase er konfigurert og tilgjengelig.',
+  );
 }
 
 export async function createList(userId: string, rawName: string): Promise<string> {
   const name = validateListName(rawName);
-  const householdId = await findHouseholdId();
+  const householdId = await findHouseholdId(userId);
   const id = createId();
   const now = nowIso();
 

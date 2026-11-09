@@ -9,14 +9,14 @@ import { Brand } from '../components/Brand';
 function Feature({ icon, title, children }: { icon: ReactNode; title: string; children: string }) {
   return (
     <li className="flex gap-3">
-      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-800 dark:bg-brand-950/70 dark:text-brand-200">
+      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink dark:bg-white/10 dark:text-paper">
         {icon}
       </span>
       <span>
-        <span className="block text-sm font-semibold text-stone-900 dark:text-stone-50">
+        <span className="block text-sm font-semibold text-ink dark:text-paper">
           {title}
         </span>
-        <span className="mt-0.5 block text-sm text-stone-600 dark:text-stone-400">{children}</span>
+        <span className="mt-0.5 block text-sm text-ink/55 dark:text-paper/55">{children}</span>
       </span>
     </li>
   );
@@ -80,11 +80,7 @@ export function AuthPage({
   };
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-cream dark:bg-stone-950">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_15%_0%,rgba(39,143,96,0.18),transparent_65%),radial-gradient(50%_40%_at_90%_20%,rgba(231,180,84,0.14),transparent_60%)]"
-      />
+    <div className="relative min-h-dvh overflow-hidden">
       <header
         className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8"
         style={{ paddingTop: 'calc(1.25rem + env(safe-area-inset-top))' }}
@@ -94,7 +90,7 @@ export function AuthPage({
           href="https://supabase.com/docs"
           target="_blank"
           rel="noreferrer"
-          className="hidden text-xs font-medium text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 sm:block"
+          className="hidden text-xs font-medium text-ink/45 hover:text-ink dark:text-paper/45 dark:hover:text-paper sm:block"
         >
           Drevet av Supabase
         </a>
@@ -102,15 +98,16 @@ export function AuthPage({
 
       <main className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-10">
         <section className="hidden lg:block">
-          <p className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-800 shadow-sm dark:border-brand-900 dark:bg-stone-900/60 dark:text-brand-200">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden="true" />
+          <p className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/55 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-paper/55">
+            <span className="h-1.5 w-1.5 rounded-full bg-ink dark:bg-paper" aria-hidden="true" />
             Husker alt du handler
           </p>
-          <h1 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-[1.08] tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl lg:text-6xl">
-            Felles handleliste.{' '}
-            <span className="text-brand-700 dark:text-brand-400">Null glemte varer.</span>
+          <h1 className="mt-5 max-w-xl font-display text-5xl font-semibold leading-[0.96] tracking-tight text-ink dark:text-paper sm:text-6xl lg:text-7xl">
+            Felles handleliste.
+            <br />
+            <em className="font-normal italic text-ink/55 dark:text-paper/55">Null glemte varer.</em>
           </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-stone-600 dark:text-stone-300 sm:text-lg">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-ink/55 dark:text-paper/55 sm:text-lg">
             Skriv «mel», få «Melk» fra historikken, huk av med ett trykk og la resten av
             husholdningen se det med en gang.
           </p>
@@ -196,13 +193,11 @@ export function AuthPage({
             </Feature>
           </ul>
 
-          <div className="mt-8 hidden max-w-sm rotate-[-1.5deg] rounded-2xl border border-stone-200 bg-white p-4 shadow-soft dark:border-stone-800 dark:bg-stone-900 lg:block">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">
-              Handleliste
-            </p>
-            <ul className="mt-2 space-y-2 text-sm">
-              <li className="flex items-center gap-2.5 text-stone-800 dark:text-stone-100">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-brand-600 bg-brand-600 text-white">
+          <div className="mt-8 hidden max-w-sm rotate-[-1.5deg] rounded-[28px] bg-mint-100 p-5 text-ink shadow-card dark:bg-mint-950 dark:text-paper lg:block">
+            <p className="eyebrow">Handleliste</p>
+            <ul className="mt-3 space-y-2 text-sm">
+              <li className="flex items-center gap-2.5">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ink text-paper dark:bg-paper dark:text-ink">
                   <svg
                     viewBox="0 0 24 24"
                     className="h-3 w-3"
@@ -213,17 +208,17 @@ export function AuthPage({
                     <path d="M5 12.5l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </span>
-                <span className="text-stone-500 line-through">Brød</span>
+                <span className="text-ink/40 line-through dark:text-paper/40">Brød</span>
               </li>
-              <li className="flex items-center gap-2.5 text-stone-800 dark:text-stone-100">
-                <span className="h-5 w-5 rounded-full border-2 border-stone-300 dark:border-stone-600" />
+              <li className="flex items-center gap-2.5">
+                <span className="h-5 w-5 rounded-full border-2 border-ink/25 dark:border-paper/25" />
                 Melk{' '}
-                <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold text-brand-800 dark:bg-brand-900 dark:text-brand-200">
+                <span className="rounded-full bg-ink/10 px-2 py-0.5 text-[10px] font-semibold text-ink dark:bg-paper/15 dark:text-paper">
                   2 stk
                 </span>
               </li>
-              <li className="flex items-center gap-2.5 text-stone-800 dark:text-stone-100">
-                <span className="h-5 w-5 rounded-full border-2 border-stone-300 dark:border-stone-600" />
+              <li className="flex items-center gap-2.5">
+                <span className="h-5 w-5 rounded-full border-2 border-ink/25 dark:border-paper/25" />
                 Egg
               </li>
             </ul>
@@ -231,26 +226,26 @@ export function AuthPage({
         </section>
 
         <section className="mx-auto w-full max-w-md">
-          <div className="card p-5 sm:p-7">
-            <h2 className="font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50">
+          <div className="card rounded-[32px] p-5 sm:p-8">
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-ink dark:text-paper">
               {embedded ? 'Logg inn for å bli med' : 'Kom i gang'}
             </h2>
-            <p className="mt-1.5 text-sm text-stone-600 dark:text-stone-300">
+            <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
               {embedded
                 ? 'Invitasjonen venter. Velg hvordan du vil logge inn.'
                 : 'Velg gjest for å komme raskt i gang, eller bruk e-post for innlogging på flere enheter.'}
             </p>
 
             {notice ? (
-              <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-100">
+              <p className="mt-4 rounded-2xl bg-butter-100 px-3 py-2 text-sm text-ink dark:bg-butter-950 dark:text-butter-100">
                 {notice}
               </p>
             ) : null}
 
             {sentTo ? (
-              <div className="mt-5 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-4 dark:border-brand-900 dark:bg-brand-950/50">
-                <p className="font-semibold text-brand-900 dark:text-brand-100">Sjekk e-posten</p>
-                <p className="mt-1 text-sm text-brand-800 dark:text-brand-200">
+              <div className="mt-5 rounded-[24px] bg-mint-100 px-4 py-4 text-ink dark:bg-mint-950 dark:text-mint-100">
+                <p className="font-semibold">Sjekk e-posten</p>
+                <p className="mt-1 text-sm opacity-75">
                   Vi sendte en innloggingslenke til <span className="font-medium">{sentTo}</span>.
                   Lenken kan åpnes på denne eller en annen enhet.
                 </p>
@@ -270,7 +265,7 @@ export function AuthPage({
                 <form className="mt-5 space-y-3" onSubmit={(event) => void handleGuest(event)}>
                   <div>
                     <label className="label" htmlFor="guest-name">
-                      Navn <span className="font-normal text-stone-500">(valgfritt)</span>
+                      Navn <span className="font-normal text-ink/35 dark:text-paper/35">(valgfritt)</span>
                     </label>
                     <input
                       id="guest-name"
@@ -285,17 +280,17 @@ export function AuthPage({
                   <button type="submit" className="btn btn-primary w-full" disabled={busy !== null}>
                     {busy === 'guest' ? 'Logger inn …' : 'Fortsett som gjest'}
                   </button>
-                  <p className="text-center text-xs text-stone-500 dark:text-stone-400">
+                  <p className="text-center text-xs text-ink/45 dark:text-paper/45">
                     Du kan oppgradere til e-post senere uten å miste listen.
                   </p>
                 </form>
 
                 <div className="my-5 flex items-center gap-3" aria-hidden="true">
-                  <span className="h-px flex-1 bg-stone-200 dark:bg-stone-800" />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500">
+                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/35 dark:text-paper/35">
                     eller med e-post
                   </span>
-                  <span className="h-px flex-1 bg-stone-200 dark:bg-stone-800" />
+                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
                 </div>
 
                 <form className="space-y-3" onSubmit={(event) => void handleEmail(event)}>
@@ -335,7 +330,7 @@ export function AuthPage({
             ) : null}
           </div>
 
-          <p className="mt-4 text-center text-xs leading-relaxed text-stone-500 dark:text-stone-400">
+          <p className="mt-4 text-center text-xs leading-relaxed text-ink/40 dark:text-paper/40">
             Ingen passord. Handlelista bruker magiske innloggingslenker og anonyme gjestekontoer.
           </p>
         </section>

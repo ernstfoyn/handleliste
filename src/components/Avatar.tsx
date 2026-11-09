@@ -1,14 +1,18 @@
 const COLORS = [
-  'bg-brand-700',
-  'bg-amber-700',
-  'bg-sky-700',
-  'bg-rose-700',
-  'bg-violet-700',
-  'bg-teal-700',
+  'bg-mint-200 text-ink dark:bg-mint-950 dark:text-mint-100',
+  'bg-blush-200 text-ink dark:bg-blush-950 dark:text-blush-100',
+  'bg-lilac-200 text-ink dark:bg-lilac-950 dark:text-lilac-100',
+  'bg-butter-200 text-ink dark:bg-butter-950 dark:text-butter-100',
+  'bg-sky-200 text-ink dark:bg-sky-950 dark:text-sky-100',
+  'bg-ink text-paper dark:bg-paper dark:text-ink',
 ] as const;
 
 function initials(name: string): string {
-  const words = name.trim().split(/\s+/u).filter(Boolean).slice(0, 2);
+  const words = name
+    .trim()
+    .split(/\s+/u)
+    .filter(Boolean)
+    .slice(0, 2);
   if (words.length === 0) return '?';
   return words.map((word) => word[0]?.toLocaleUpperCase('nb-NO') ?? '').join('');
 }
@@ -40,7 +44,7 @@ export function Avatar({
         : 'h-9 w-9 text-xs';
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ring-2 ring-white dark:ring-stone-900 ${dimensions} ${colorFor(id)} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ring-2 ring-paper dark:ring-[#0D0D0C] ${dimensions} ${colorFor(id)} ${className}`}
       aria-hidden="true"
     >
       {initials(name)}
@@ -61,7 +65,7 @@ export function AvatarStack({
         <Avatar key={person.userId} id={person.userId} name={person.displayName} size="sm" />
       ))}
       {people.length > 4 ? (
-        <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-stone-200 px-1 text-[11px] font-semibold text-stone-700 ring-2 ring-white dark:bg-stone-700 dark:text-stone-200 dark:ring-stone-900">
+        <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-ink px-1 text-[11px] font-semibold text-paper ring-2 ring-paper dark:bg-paper dark:text-ink dark:ring-[#0D0D0C]">
           +{people.length - 4}
         </span>
       ) : null}

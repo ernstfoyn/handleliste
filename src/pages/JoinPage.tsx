@@ -66,7 +66,7 @@ export function JoinPage() {
   if (!ready || !token) return <SplashScreen label="Forbereder listen …" />;
 
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-cream px-4 py-12 dark:bg-stone-950">
+    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4 py-12">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(39,143,96,0.18),transparent_70%)]"
@@ -78,13 +78,13 @@ export function JoinPage() {
         <div className="card mt-8 p-6 text-center sm:p-8">
           {state.status === 'joining' ? (
             <>
-              <div className="mx-auto flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl bg-brand-100 dark:bg-brand-950/60">
+              <div className="mx-auto flex h-14 w-14 animate-pulse items-center justify-center rounded-[20px] bg-mint-100 dark:bg-mint-950">
                 <BrandMark className="h-9 w-9" />
               </div>
-              <h1 className="mt-4 font-display text-2xl font-semibold text-stone-900 dark:text-stone-50">
+              <h1 className="mt-4 font-display text-3xl font-semibold text-ink dark:text-paper">
                 Blir med i listen …
               </h1>
-              <p className="mt-1.5 text-sm text-stone-600 dark:text-stone-300">
+              <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
                 Vi kobler deg til den delte handlelisten. Dette tar vanligvis under et sekund.
               </p>
             </>
@@ -106,10 +106,10 @@ export function JoinPage() {
                   />
                 </svg>
               </div>
-              <h1 className="mt-4 font-display text-2xl font-semibold text-stone-900 dark:text-stone-50">
+              <h1 className="mt-4 font-display text-3xl font-semibold text-ink dark:text-paper">
                 Kunne ikke bli med
               </h1>
-              <p role="alert" className="mt-2 text-sm text-stone-600 dark:text-stone-300">
+              <p role="alert" className="mt-2 text-sm text-ink/55 dark:text-paper/55">
                 {state.message}
               </p>
               <div className="mt-5 flex flex-col gap-2">
@@ -127,7 +127,7 @@ export function JoinPage() {
             </>
           )}
         </div>
-        <p className="mt-4 text-center text-xs text-stone-500 dark:text-stone-400">
+        <p className="mt-4 text-center text-xs text-ink/35 dark:text-paper/35">
           Invitasjonslenker varer i 30 dager. Kun eier kan fjerne medlemmer.
         </p>
       </div>

@@ -13,8 +13,22 @@
   }
 
   body {
-    @apply bg-cream font-sans text-ink antialiased dark:bg-stone-950 dark:text-stone-100;
+    @apply bg-paper font-sans text-ink antialiased dark:bg-[#0D0D0C] dark:text-paper;
     min-height: 100dvh;
+    background-image:
+      radial-gradient(58% 48% at 8% 0%, rgba(221, 243, 228, 0.9), transparent 70%),
+      radial-gradient(46% 40% at 94% 7%, rgba(233, 225, 248, 0.72), transparent 72%),
+      radial-gradient(38% 34% at 52% 100%, rgba(247, 220, 230, 0.48), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-image:
+        radial-gradient(58% 48% at 8% 0%, rgba(31, 92, 63, 0.22), transparent 70%),
+        radial-gradient(46% 40% at 94% 7%, rgba(74, 50, 120, 0.18), transparent 72%),
+        radial-gradient(38% 34% at 52% 100%, rgba(122, 46, 74, 0.12), transparent 70%);
+    }
   }
 
   h1,
@@ -24,11 +38,11 @@
   }
 
   ::selection {
-    @apply bg-brand-200 text-brand-950;
+    @apply bg-mint-200 text-ink;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-cream dark:ring-brand-400 dark:ring-offset-stone-950;
+    @apply outline-none ring-2 ring-ink ring-offset-2 ring-offset-paper dark:ring-paper dark:ring-offset-[#0D0D0C];
   }
 
   button,
@@ -42,19 +56,19 @@
 
 @layer components {
   .btn {
-    @apply inline-flex min-h-11 select-none items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex min-h-12 select-none items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-all disabled:pointer-events-none disabled:opacity-45;
   }
 
   .btn-primary {
-    @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800 dark:bg-brand-500 dark:text-brand-950 dark:hover:bg-brand-400;
+    @apply bg-ink text-paper shadow-sm hover:bg-ink/85 active:scale-[0.99] dark:bg-paper dark:text-ink dark:hover:bg-paper/90;
   }
 
   .btn-secondary {
-    @apply border border-stone-200 bg-white text-stone-800 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800;
+    @apply border border-ink/10 bg-white/70 text-ink hover:border-ink/20 hover:bg-white dark:border-white/10 dark:bg-white/[0.06] dark:text-paper dark:hover:bg-white/10;
   }
 
   .btn-ghost {
-    @apply text-stone-600 hover:bg-stone-900/5 dark:text-stone-300 dark:hover:bg-white/5;
+    @apply text-ink/65 hover:bg-ink/5 hover:text-ink dark:text-paper/65 dark:hover:bg-white/10 dark:hover:text-paper;
   }
 
   .btn-danger {
@@ -62,33 +76,61 @@
   }
 
   .card {
-    @apply rounded-2xl border border-stone-200/80 bg-white/90 shadow-soft backdrop-blur dark:border-stone-800 dark:bg-stone-900/80;
+    @apply rounded-[28px] border border-ink/[0.06] bg-white/75 shadow-card backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.055];
   }
 
   .field {
-    @apply min-h-11 w-full rounded-xl border border-stone-300 bg-white px-3.5 text-base text-stone-900 placeholder:text-stone-500 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:placeholder:text-stone-400;
+    @apply min-h-12 w-full rounded-2xl border border-ink/10 bg-white/70 px-4 text-base text-ink placeholder:text-ink/35 focus:border-ink/35 focus:outline-none focus:ring-2 focus:ring-ink/10 dark:border-white/10 dark:bg-white/[0.06] dark:text-paper dark:placeholder:text-paper/35 dark:focus:border-white/30 dark:focus:ring-white/10;
   }
 
   .label {
-    @apply text-sm font-medium text-stone-700 dark:text-stone-300;
+    @apply text-sm font-medium text-ink/70 dark:text-paper/70;
   }
 
   .meta {
-    @apply text-sm text-stone-500 dark:text-stone-400;
+    @apply text-sm text-ink/55 dark:text-paper/55;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/45 dark:text-paper/45;
   }
 
   .chip {
-    @apply inline-flex min-h-11 items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 text-sm font-medium text-stone-700 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:border-brand-700 dark:hover:bg-brand-950/50 dark:hover:text-brand-200;
+    @apply inline-flex min-h-11 items-center gap-1.5 rounded-full border border-ink/10 bg-white/70 px-3.5 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lift dark:border-white/10 dark:bg-white/[0.06] dark:text-paper dark:hover:bg-white/10;
   }
 
   .icon-button {
-    @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-stone-500 transition-colors hover:bg-stone-900/5 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-white/5 dark:hover:text-stone-100;
+    @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink/55 transition-colors hover:bg-ink/5 hover:text-ink dark:text-paper/55 dark:hover:bg-white/10 dark:hover:text-paper;
+  }
+
+  .pastel-mint {
+    @apply bg-mint-100 text-ink dark:bg-mint-950 dark:text-mint-100;
+  }
+
+  .pastel-blush {
+    @apply bg-blush-100 text-ink dark:bg-blush-950 dark:text-blush-100;
+  }
+
+  .pastel-lilac {
+    @apply bg-lilac-100 text-ink dark:bg-lilac-950 dark:text-lilac-100;
+  }
+
+  .pastel-butter {
+    @apply bg-butter-100 text-ink dark:bg-butter-950 dark:text-butter-100;
+  }
+
+  .pastel-sky {
+    @apply bg-sky-100 text-ink dark:bg-sky-950 dark:text-sky-100;
   }
 }
 
 @layer utilities {
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
   }
 
   .tap-target {

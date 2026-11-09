@@ -1,6 +1,14 @@
 import { mostUsed, recentlyUsed } from '../lib/autocomplete';
 import type { CatalogEntry } from '../lib/types';
 
+const CHIP_SURFACES = [
+  'bg-mint-100 dark:bg-mint-950',
+  'bg-blush-100 dark:bg-blush-950',
+  'bg-lilac-100 dark:bg-lilac-950',
+  'bg-butter-100 dark:bg-butter-950',
+  'bg-sky-100 dark:bg-sky-950',
+] as const;
+
 function SuggestionRow({
   title,
   entries,
@@ -21,24 +29,24 @@ function SuggestionRow({
       <div className="mb-1.5 flex items-baseline justify-between gap-2 px-1">
         <h2
           id={`suggestion-${title.replace(/\s+/gu, '-').toLocaleLowerCase('nb-NO')}`}
-          className="text-xs font-semibold uppercase tracking-[0.13em] text-stone-500 dark:text-stone-400"
+          className="eyebrow"
         >
           {title}
         </h2>
-        <span className="text-[11px] text-stone-500 dark:text-stone-400">{hint}</span>
+        <span className="text-[11px] text-ink/35 dark:text-paper/35">{hint}</span>
       </div>
       <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-        {entries.map((entry) => (
+        {entries.map((entry, index) => (
           <button
             key={entry.id}
             type="button"
-            className="chip shrink-0"
+            className={`chip shrink-0 border-transparent ${CHIP_SURFACES[index % CHIP_SURFACES.length]}`}
             onClick={() => onPick(entry.displayName)}
             aria-label={`Legg til ${entry.displayName} fra ${title.toLocaleLowerCase('nb-NO')}`}
           >
             <span>{entry.displayName}</span>
             {entry.useCount > 1 ? (
-              <span className="text-[11px] font-normal text-stone-500 dark:text-stone-400">
+              <span className="text-[11px] font-normal text-ink/35 dark:text-paper/40">
                 {entry.useCount}×
               </span>
             ) : null}

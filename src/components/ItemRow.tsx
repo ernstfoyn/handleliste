@@ -99,7 +99,7 @@ export function ItemRow({
   };
 
   return (
-    <li data-testid="item-row" className="group relative overflow-hidden rounded-2xl">
+    <li data-testid="item-row" className="group relative overflow-hidden rounded-[24px]">
       <div
         className="pointer-events-none absolute inset-y-0 right-0 flex w-24 items-center justify-center bg-red-600 text-white transition-opacity"
         style={{ opacity: dragX < 0 ? 1 : 0 }}
@@ -123,10 +123,10 @@ export function ItemRow({
       <div className="relative z-10 flex items-stretch">
         <button
           type="button"
-          className={`flex min-h-14 flex-1 select-none items-center gap-3 rounded-l-2xl border border-r-0 px-3.5 py-3 text-left transition-[background-color,transform,opacity] duration-150 ${
+          className={`flex min-h-14 flex-1 select-none items-center gap-3 rounded-l-[24px] border border-r-0 px-4 py-3 text-left transition-[background-color,transform,opacity] duration-150 ${
             item.isChecked
-              ? 'border-stone-200/70 bg-stone-100 dark:border-stone-800 dark:bg-stone-900'
-              : 'border-stone-200/80 bg-white hover:bg-brand-50/40 dark:border-stone-800 dark:bg-stone-900 dark:hover:bg-stone-800/70'
+              ? 'border-ink/[0.06] bg-blush-50/70 dark:border-white/10 dark:bg-blush-950/20'
+              : 'border-ink/[0.06] bg-white/75 hover:bg-white dark:border-white/10 dark:bg-white/[0.055] dark:hover:bg-white/[0.09]'
           }`}
           style={{ transform: `translateX(${dragX}px)`, touchAction: 'pan-y' }}
           data-item-toggle-id={item.id}
@@ -153,8 +153,8 @@ export function ItemRow({
           <span
             className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
               item.isChecked
-                ? 'border-brand-600 bg-brand-600 text-white dark:border-brand-500 dark:bg-brand-500 dark:text-brand-950'
-                : 'border-stone-300 bg-white dark:border-stone-600 dark:bg-stone-900'
+                ? 'border-ink bg-ink text-paper dark:border-paper dark:bg-paper dark:text-ink'
+                : 'border-ink/20 bg-white/60 dark:border-white/20 dark:bg-white/10'
             }`}
             aria-hidden="true"
           >
@@ -176,8 +176,8 @@ export function ItemRow({
               <span
                 className={`break-words text-[15px] font-medium leading-snug ${
                   item.isChecked
-                    ? 'text-stone-600 line-through decoration-stone-400/80 dark:text-stone-400 dark:decoration-stone-500'
-                    : 'text-stone-900 dark:text-stone-50'
+                    ? 'text-ink/45 line-through decoration-ink/30 dark:text-paper/40 dark:decoration-paper/30'
+                    : 'text-ink dark:text-paper'
                 }`}
               >
                 {item.displayName}
@@ -186,8 +186,8 @@ export function ItemRow({
                 <span
                   className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
                     item.isChecked
-                      ? 'bg-stone-200/80 text-stone-600 dark:bg-stone-800 dark:text-stone-300'
-                      : 'bg-brand-100 text-brand-800 dark:bg-brand-900/60 dark:text-brand-200'
+                      ? 'bg-ink/5 text-ink/45 dark:bg-paper/10 dark:text-paper/45'
+                      : 'bg-mint-100 text-ink dark:bg-mint-950 dark:text-mint-100'
                   }`}
                 >
                   {item.quantity}
@@ -198,8 +198,8 @@ export function ItemRow({
               <span
                 className={`mt-0.5 block text-xs ${
                   item.isChecked
-                    ? 'text-stone-600 dark:text-stone-400'
-                    : 'text-stone-500 dark:text-stone-400'
+                    ? 'text-ink/35 dark:text-paper/35'
+                    : 'text-ink/45 dark:text-paper/45'
                 }`}
               >
                 {item.note}
@@ -211,8 +211,10 @@ export function ItemRow({
         <button
           type="button"
           data-ignore-row="true"
-          className={`flex min-h-14 w-12 shrink-0 items-center justify-center rounded-r-2xl border border-l-0 border-stone-200/80 text-stone-500 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:text-red-700 dark:border-stone-800 dark:hover:bg-red-950/40 dark:hover:text-red-300 ${
-            item.isChecked ? 'bg-stone-100 dark:bg-stone-900' : 'bg-white dark:bg-stone-900'
+          className={`flex min-h-14 w-12 shrink-0 items-center justify-center rounded-r-[24px] border border-l-0 border-ink/[0.06] text-ink/30 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:text-red-700 dark:border-white/10 dark:text-paper/30 dark:hover:bg-red-950/40 dark:hover:text-red-300 ${
+            item.isChecked
+              ? 'bg-blush-50/70 dark:bg-blush-950/20'
+              : 'bg-white/75 dark:bg-white/[0.055]'
           }`}
           onClick={onDelete}
           aria-label={`Slett ${item.displayName}`}

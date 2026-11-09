@@ -127,14 +127,13 @@ function render(size, { fullBleed = false } = {}) {
             distanceToSegment(x, y, points[1], points[2]) <= thickness / 2;
 
           if (onCheck) {
-            r = 250;
-            g = 247;
-            b = 240;
+            r = 247;
+            g = 243;
+            b = 236;
           } else {
-            const t = Math.min(1, Math.max(0, (x / size + y / size) / 2));
-            r = Math.round(47 + (20 - 47) * t);
-            g = Math.round(158 + (90 - 158) * t);
-            b = Math.round(106 + (59 - 106) * t);
+            r = 17;
+            g = 17;
+            b = 17;
           }
 
           aSum += 1;
