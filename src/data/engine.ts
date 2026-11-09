@@ -109,8 +109,8 @@ class SyncEngine {
       do {
         this.pullAgain = false;
         try {
-          const changed = await pullAll(
-            () => generation === this.generation && this.userId !== null,
+          const changed = await pullAll(this.userId ?? '', () =>
+            generation === this.generation && this.userId !== null,
           );
           if (generation !== this.generation) return;
           const store = useSyncStore.getState();
@@ -125,6 +125,13 @@ class SyncEngine {
           }
         }
       } while (this.pullAgain && this.online && generation === this.generation);
+
+      if (generation === this.generation && this.online && !this.paused) {
+        await this.refreshPending();
+        if (generation === this.generation && useSyncStore.getState().pending > 0) {
+          void this.flushNow();
+        }
+      }
     })().finally(() => {
       if (generation === this.generation) {
         if (this.pulling) this.pulling = null;
