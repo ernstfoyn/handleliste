@@ -75,8 +75,6 @@ export default {
           'sans-serif',
         ],
         display: [
-          'ITC Garamond Light Condensed',
-          'ITC Garamond',
           'Cormorant Garamond',
           'Garamond',
           'Palatino Linotype',
