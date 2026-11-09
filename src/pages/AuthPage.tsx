@@ -50,7 +50,8 @@ export function AuthPage({
   nextPath?: string;
   embedded?: boolean;
 }) {
-  const { status, signInAsGuest, signInWithMagicLink } = useAuth();
+  const { status, signInAsGuest, signInWithMagicLink, signInWithPassword, signUpWithPassword } =
+    useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -59,9 +60,14 @@ export function AuthPage({
 
   const [guestName, setGuestName] = useState('');
   const [email, setEmail] = useState('');
-  const [busy, setBusy] = useState<'guest' | 'email' | null>(null);
+  const [busy, setBusy] = useState<'guest' | 'email' | 'password' | 'signup' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const [emailMethod, setEmailMethod] = useState<'password' | 'magic'>('password');
+  const [passwordMode, setPasswordMode] = useState<'login' | 'signup'>('login');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [confirmationSent, setConfirmationSent] = useState(false);
 
   useEffect(() => {
     if (status === 'signed-in') {
@@ -93,6 +99,38 @@ export function AuthPage({
       setSentTo(email.trim());
     } catch (emailError) {
       setError(toErrorMessage(emailError));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const switchMode = (mode: 'login' | 'signup') => {
+    setPasswordMode(mode);
+    setError(null);
+    setPassword('');
+    setPasswordConfirm('');
+    setConfirmationSent(false);
+  };
+
+  const handlePassword = async (event: FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    if (passwordMode === 'signup' && password !== passwordConfirm) {
+      setError('Passordene er ikke like.');
+      return;
+    }
+    setBusy(passwordMode === 'signup' ? 'signup' : 'password');
+    try {
+      if (passwordMode === 'signup') {
+        const result = await signUpWithPassword(email, password);
+        if (result.needsEmailConfirmation) {
+          setConfirmationSent(true);
+        }
+      } else {
+        await signInWithPassword(email, password);
+      }
+    } catch (passwordError) {
+      setError(toErrorMessage(passwordError));
     } finally {
       setBusy(null);
     }
@@ -255,8 +293,8 @@ export function AuthPage({
             </h2>
             <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
               {embedded
-                ? 'Invitasjonen venter. Velg hvordan du vil logge inn.'
-                : 'Velg gjest for å komme raskt i gang, eller bruk e-post for innlogging på flere enheter.'}
+                ? 'Invitasjonen venter. Logg inn med e-post og passord, e-postlenke eller gjest.'
+                : 'Logg inn med e-post og passord, eller fortsett som gjest. Første gang kan du opprette konto her.'}
             </p>
 
             {notice ? (
@@ -285,7 +323,207 @@ export function AuthPage({
               </div>
             ) : (
               <>
-                <form className="mt-5 space-y-3" onSubmit={(event) => void handleGuest(event)}>
+                <div
+                  className="mt-5 grid grid-cols-2 gap-1 rounded-full bg-ink/5 p-1 dark:bg-white/5"
+                  role="group"
+                  aria-label="Innloggingsmetode"
+                >
+                  <button
+                    type="button"
+                    aria-pressed={emailMethod === 'password'}
+                    className={`min-h-10 rounded-full px-3 text-sm font-medium transition-colors ${
+                      emailMethod === 'password'
+                        ? 'bg-white text-ink shadow-sm dark:bg-white/10 dark:text-paper'
+                        : 'text-ink/45 hover:text-ink dark:text-paper/45 dark:hover:text-paper'
+                    }`}
+                    onClick={() => {
+                      setEmailMethod('password');
+                      setError(null);
+                    }}
+                  >
+                    Passord
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={emailMethod === 'magic'}
+                    className={`min-h-10 rounded-full px-3 text-sm font-medium transition-colors ${
+                      emailMethod === 'magic'
+                        ? 'bg-white text-ink shadow-sm dark:bg-white/10 dark:text-paper'
+                        : 'text-ink/45 hover:text-ink dark:text-paper/45 dark:hover:text-paper'
+                    }`}
+                    onClick={() => {
+                      setEmailMethod('magic');
+                      setError(null);
+                    }}
+                  >
+                    E-postlenke
+                  </button>
+                </div>
+
+                {emailMethod === 'password' ? (
+                  confirmationSent ? (
+                    <div className="mt-4 rounded-[24px] bg-mint-100 px-4 py-4 text-ink dark:bg-mint-950 dark:text-mint-100">
+                      <p className="font-semibold">Bekreft e-posten</p>
+                      <p className="mt-1 text-sm opacity-75">
+                        Vi opprettet kontoen for <span className="font-medium">{email}</span>. Åpne
+                        bekreftelseslenken i e-posten, og logg deretter inn med e-post og passord.
+                      </p>
+                      <button
+                        type="button"
+                        className="btn btn-secondary mt-3 w-full"
+                        onClick={() => {
+                          setConfirmationSent(false);
+                          switchMode('login');
+                        }}
+                      >
+                        Til innlogging
+                      </button>
+                    </div>
+                  ) : (
+                    <form
+                      className="mt-4 space-y-3"
+                      onSubmit={(event) => void handlePassword(event)}
+                    >
+                      <div>
+                        <label className="label" htmlFor="password-email">
+                          E-post
+                        </label>
+                        <input
+                          id="password-email"
+                          type="email"
+                          className="field mt-1.5"
+                          value={email}
+                          onChange={(event) => setEmail(event.target.value)}
+                          placeholder="navn@eksempel.no"
+                          autoComplete="email"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="label" htmlFor="password">
+                          Passord
+                        </label>
+                        <input
+                          id="password"
+                          type="password"
+                          className="field mt-1.5"
+                          value={password}
+                          onChange={(event) => setPassword(event.target.value)}
+                          placeholder="Minst 8 tegn"
+                          autoComplete={
+                            passwordMode === 'signup' ? 'new-password' : 'current-password'
+                          }
+                          minLength={8}
+                          required
+                        />
+                        {passwordMode === 'signup' ? (
+                          <p className="mt-1 text-[11px] text-ink/40 dark:text-paper/40">
+                            Minst 8 tegn.
+                          </p>
+                        ) : null}
+                      </div>
+                      {passwordMode === 'signup' ? (
+                        <div>
+                          <label className="label" htmlFor="password-confirm">
+                            Gjenta passord
+                          </label>
+                          <input
+                            id="password-confirm"
+                            type="password"
+                            className="field mt-1.5"
+                            value={passwordConfirm}
+                            onChange={(event) => setPasswordConfirm(event.target.value)}
+                            placeholder="Gjenta passordet"
+                            autoComplete="new-password"
+                            minLength={8}
+                            required
+                          />
+                        </div>
+                      ) : null}
+                      <button
+                        type="submit"
+                        className="btn btn-primary w-full"
+                        disabled={busy !== null}
+                      >
+                        {busy === 'password'
+                          ? 'Logger inn …'
+                          : busy === 'signup'
+                            ? 'Oppretter …'
+                            : passwordMode === 'signup'
+                              ? 'Opprett konto'
+                              : 'Logg inn'}
+                      </button>
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        {passwordMode === 'login' ? (
+                          <button
+                            type="button"
+                            className="font-medium text-ink/55 underline-offset-4 hover:text-ink hover:underline dark:text-paper/55 dark:hover:text-paper"
+                            onClick={() => switchMode('signup')}
+                          >
+                            Ny her? Opprett konto
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="font-medium text-ink/55 underline-offset-4 hover:text-ink hover:underline dark:text-paper/55 dark:hover:text-paper"
+                            onClick={() => switchMode('login')}
+                          >
+                            Har du konto? Logg inn
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="text-ink/40 hover:text-ink dark:text-paper/40 dark:hover:text-paper"
+                          onClick={() => {
+                            setEmailMethod('magic');
+                            setError(null);
+                          }}
+                        >
+                          Glemt passord?
+                        </button>
+                      </div>
+                    </form>
+                  )
+                ) : (
+                  <form className="mt-4 space-y-3" onSubmit={(event) => void handleEmail(event)}>
+                    <div>
+                      <label className="label" htmlFor="login-email">
+                        E-post
+                      </label>
+                      <input
+                        id="login-email"
+                        type="email"
+                        className="field mt-1.5"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        placeholder="navn@eksempel.no"
+                        autoComplete="email"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="btn btn-secondary w-full"
+                      disabled={busy !== null}
+                    >
+                      {busy === 'email' ? 'Sender …' : 'Send e-postlenke'}
+                    </button>
+                    <p className="text-center text-xs text-ink/40 dark:text-paper/40">
+                      Lenken kan åpnes på denne eller en annen enhet. Etterpå kan du sette passord
+                      under Konto.
+                    </p>
+                  </form>
+                )}
+
+                <div className="my-5 flex items-center gap-3" aria-hidden="true">
+                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/35 dark:text-paper/35">
+                    eller fortsett som gjest
+                  </span>
+                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
+                </div>
+
+                <form className="space-y-3" onSubmit={(event) => void handleGuest(event)}>
                   <div>
                     <label className="label" htmlFor="guest-name">
                       Navn{' '}
@@ -303,45 +541,16 @@ export function AuthPage({
                       maxLength={60}
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary w-full" disabled={busy !== null}>
-                    {busy === 'guest' ? 'Logger inn …' : 'Fortsett som gjest'}
-                  </button>
-                  <p className="text-center text-xs text-ink/45 dark:text-paper/45">
-                    Du kan oppgradere til e-post senere uten å miste listen.
-                  </p>
-                </form>
-
-                <div className="my-5 flex items-center gap-3" aria-hidden="true">
-                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/35 dark:text-paper/35">
-                    eller med e-post
-                  </span>
-                  <span className="h-px flex-1 bg-ink/10 dark:bg-white/10" />
-                </div>
-
-                <form className="space-y-3" onSubmit={(event) => void handleEmail(event)}>
-                  <div>
-                    <label className="label" htmlFor="login-email">
-                      E-post for innloggingslenke
-                    </label>
-                    <input
-                      id="login-email"
-                      type="email"
-                      className="field mt-1.5"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      placeholder="navn@eksempel.no"
-                      autoComplete="email"
-                      required
-                    />
-                  </div>
                   <button
                     type="submit"
                     className="btn btn-secondary w-full"
                     disabled={busy !== null}
                   >
-                    {busy === 'email' ? 'Sender …' : 'Send innloggingslenke'}
+                    {busy === 'guest' ? 'Logger inn …' : 'Fortsett som gjest'}
                   </button>
+                  <p className="text-center text-xs text-ink/45 dark:text-paper/45">
+                    Du kan oppgradere til e-post og passord senere uten å miste listen.
+                  </p>
                 </form>
               </>
             )}
@@ -349,7 +558,7 @@ export function AuthPage({
             {error ? (
               <p
                 role="alert"
-                className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200"
+                className="mt-4 rounded-2xl bg-blush-100 px-3 py-2 text-sm text-blush-700 dark:bg-blush-950 dark:text-blush-100"
               >
                 {error}
               </p>
@@ -357,7 +566,8 @@ export function AuthPage({
           </div>
 
           <p className="mt-4 text-center text-xs leading-relaxed text-ink/40 dark:text-paper/40">
-            Ingen passord. Handlelista bruker magiske innloggingslenker og anonyme gjestekontoer.
+            E-post og passord, magisk e-postlenke eller anonym gjestekonto. Alt fungerer offline
+            etter innlogging.
           </p>
         </section>
       </main>

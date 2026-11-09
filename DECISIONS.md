@@ -79,9 +79,15 @@ Korte, bevisste valg for MVP-en. Dato: 2026-11-09.
 
 ## Auth
 
-- Magic link via Supabase OTP. Ingen passord.
-- Anonym gjest (`signInAnonymously`) med valgfritt visningsnavn. Ved oppgradering brukes
-  `updateUser({ email })`, som beholder samme `user.id` og dermed alle data.
+- **E-post + passord** er primær innlogging. Supabase hasher og lagrer passordene; appen ser dem
+  aldri. Passord kan settes/endres under **Konto** av en innlogget bruker.
+- **Magic link** beholdes som alternativ og som passord-reset: brukeren logger inn med lenke og
+  setter nytt passord under **Konto**. Det gir ingen egen reset-flyt å vedlikeholde.
+- **Anonym gjest** (`signInAnonymously`) med valgfritt visningsnavn. Ved oppgradering brukes
+  `updateUser({ email, password? })`, som beholder samme `user.id` og dermed alle data. Ved
+  bekreftelse av e-post kan passordet brukes på alle enheter.
+- Nye kontoer med passord bruker `signUp`. Med «Confirm email» på må e-posten bekreftes før første
+  passordinnlogging; lokal dev har `enable_confirmations = false` for rask testing.
 - Auth-trigger oppretter profil, husholdning og standardliste. `ensure_bootstrap()` er idempotent
   og reparerer manglende data ved innlogging.
 - Local cache holdes adskilt per `user.id`; en annen bruker på samme enhet får ren IndexedDB.

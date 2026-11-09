@@ -9,14 +9,16 @@ import { Avatar } from './Avatar';
 import { Dialog } from './Dialog';
 
 export function AccountDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { user, signOut, upgradeWithEmail } = useAuth();
+  const { user, signOut, upgradeWithEmail, setPassword } = useAuth();
   const profile = useMyProfile();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [busy, setBusy] = useState<'name' | 'upgrade' | 'signout' | null>(null);
+  const [upgradePassword, setUpgradePassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [busy, setBusy] = useState<'name' | 'upgrade' | 'password' | 'signout' | null>(null);
   const wasOpen = useRef(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,8 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
     if (open && !wasOpen.current) {
       setName(profile?.displayName ?? '');
       setEmail('');
+      setUpgradePassword('');
+      setNewPassword('');
       setMessage(null);
       setError(null);
       setBusy(null);
@@ -58,13 +62,32 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
     setError(null);
     setMessage(null);
     try {
-      await upgradeWithEmail(email);
+      await upgradeWithEmail(email, upgradePassword || undefined);
       setMessage(
-        'Sjekk e-posten for å bekrefte. Du beholder listen, historikken og medlemskapene dine.',
+        upgradePassword
+          ? 'Sjekk e-posten for å bekrefte. Etterpå kan du logge inn med e-post og passord.'
+          : 'Sjekk e-posten for å bekrefte. Du beholder listen, historikken og medlemskapene dine.',
       );
       setEmail('');
+      setUpgradePassword('');
     } catch (submitError) {
       setError(toErrorMessage(submitError));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const handleSetPassword = async (event: FormEvent) => {
+    event.preventDefault();
+    setBusy('password');
+    setError(null);
+    setMessage(null);
+    try {
+      await setPassword(newPassword);
+      setNewPassword('');
+      setMessage('Passordet er lagret. Du kan nå logge inn med e-post og passord.');
+    } catch (passwordError) {
+      setError(toErrorMessage(passwordError));
     } finally {
       setBusy(null);
     }
@@ -146,12 +169,67 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
               required
             />
           </div>
+          <div className="mt-3">
+            <label className="label" htmlFor="account-upgrade-password">
+              Passord{' '}
+              <span className="font-normal text-ink/35 dark:text-paper/35">(valgfritt)</span>
+            </label>
+            <input
+              id="account-upgrade-password"
+              type="password"
+              className="field mt-1.5"
+              value={upgradePassword}
+              onChange={(event) => setUpgradePassword(event.target.value)}
+              placeholder="Minst 8 tegn"
+              autoComplete="new-password"
+              minLength={8}
+            />
+            <p className="mt-1 text-[11px] text-ink/40 dark:text-paper/40">
+              Velger du passord, kan du logge inn med e-post og passord etter at e-posten er
+              bekreftet.
+            </p>
+          </div>
           <button
             type="submit"
             className="btn btn-secondary mt-3 w-full sm:w-auto"
             disabled={busy !== null}
           >
             {busy === 'upgrade' ? 'Sender …' : 'Send bekreftelseslenke'}
+          </button>
+        </form>
+      ) : null}
+
+      {!anonymous ? (
+        <form
+          className="mt-6 border-t border-ink/10 pt-5 dark:border-white/10"
+          onSubmit={handleSetPassword}
+        >
+          <h3 className="font-semibold text-ink dark:text-paper">Sett eller endre passord</h3>
+          <p className="meta mt-1">
+            Etterpå kan du logge inn med e-post og passord på alle enheter.
+          </p>
+          <div className="mt-3">
+            <label className="label" htmlFor="account-new-password">
+              Nytt passord
+            </label>
+            <input
+              id="account-new-password"
+              type="password"
+              className="field mt-1.5"
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              placeholder="Minst 8 tegn"
+              autoComplete="new-password"
+              minLength={8}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary mt-3 w-full sm:w-auto"
+            disabled={busy !== null}
+          >
+            {busy === 'password' ? 'Lagrer …' : 'Lagre passord'}
           </button>
         </form>
       ) : null}

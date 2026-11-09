@@ -11,6 +11,8 @@ outbox. UI er på norsk, mobil først, med mørk modus etter systeminnstilling.
 ## Kjernefunksjoner
 
 - Flere lister per bruker: opprett, gi nytt navn, arkivér, gjenopprett og myk-slett.
+- Innlogging med e-post + passord, magisk e-postlenke eller anonym gjestekonto. Passord kan settes
+  på en eksisterende konto under **Konto**.
 - Én liste kan deles med flere via en unik invitasjonslenke. Eier kan fjerne medlemmer.
 - Hurtigregistrering: Enter legger til og beholder fokus. Mengde og notat er valgfritt.
 - Autocomplete fra historikken mens du skriver, med prefikstreff → frekvens → sist brukt.
@@ -92,7 +94,7 @@ npm run dev
    fortsatt kilden til sannhet.
 
 3. I Supabase Dashboard:
-   - **Authentication → Sign In / Providers**: skru på e-post (magic link) og
+   - **Authentication → Sign In / Providers**: skru på e-post (gir både passord og magic link) og
      **Anonymous Sign-Ins**.
    - **Authentication → URL Configuration**: sett Site URL til appens URL og legg til
      `https://din-app/**` som redirect URL. For lokal testing:
@@ -234,7 +236,7 @@ React (Vite, TS strict, Tailwind)
 Supabase
 ├── Postgres + RLS + triggere
 ├── Realtime (postgres_changes + presence)
-└── Auth (magic link + anonym gjest)
+└── Auth (passord, magic link + anonym gjest)
 ```
 
 ### Local-first-flyt
@@ -333,6 +335,8 @@ kjøres bevisst ikke i den enkle CI-jobben.
   `supabase/config.toml`, cloud i Dashboard).
 - **Magic link kommer ikke**: sjekk Mailpit på <http://localhost:54324>, og at redirect-URL er
   tillatt i Supabase.
+- **Passordinnlogging virker ikke**: eksisterende kontoer må først sette passord under **Konto**.
+  Nye kontoer med passord må bekrefte e-posten når «Confirm email» er slått på.
 - **«Email rate limit exceeded»**: Supabase sin innebygde e-posttjeneste har strenge grenser
   (typisk et par e-poster i timen). Vent, eller sett opp egen SMTP under
   **Authentication → SMTP Settings**. For rask testing på en ny enhet kan du heller bruke
