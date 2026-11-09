@@ -19,7 +19,7 @@ export default defineConfig({
         scope: '/',
         display: 'standalone',
         background_color: '#F7F3EC',
-        theme_color: '#111111',
+        theme_color: '#F7F3EC',
         categories: ['shopping', 'productivity'],
         icons: [
           {

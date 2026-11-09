@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    color-scheme: light dark;
+    color-scheme: light;
   }
 
   html {
@@ -20,15 +20,6 @@
       radial-gradient(46% 40% at 94% 7%, rgba(233, 225, 248, 0.72), transparent 72%),
       radial-gradient(38% 34% at 52% 100%, rgba(247, 220, 230, 0.48), transparent 70%);
     background-attachment: fixed;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
-      background-image:
-        radial-gradient(58% 48% at 8% 0%, rgba(31, 92, 63, 0.22), transparent 70%),
-        radial-gradient(46% 40% at 94% 7%, rgba(74, 50, 120, 0.18), transparent 72%),
-        radial-gradient(38% 34% at 52% 100%, rgba(122, 46, 74, 0.12), transparent 70%);
-    }
   }
 
   h1,
