@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../lib/db';
+import { buildHistory } from '../lib/history';
 import type { CatalogEntry, Household, Item, ListMember, ListRecord, Profile } from '../lib/types';
 
 export interface ListData {
@@ -27,10 +28,11 @@ export function useListData(listId: string | undefined): ListData | undefined {
     const list = await db.lists.get(listId);
     if (!list || list.deletedAt) return EMPTY;
 
-    const [items, members, catalog, household] = await Promise.all([
+    const [items, members, catalog, allItems, household] = await Promise.all([
       db.items.where('listId').equals(listId).toArray(),
       db.listMembers.where('listId').equals(listId).toArray(),
-      db.catalog.where('householdId').equals(list.householdId).toArray(),
+      db.catalog.toArray(),
+      db.items.toArray(),
       db.households.get(list.householdId),
     ]);
 
@@ -43,7 +45,7 @@ export function useListData(listId: string | undefined): ListData | undefined {
       ),
       members,
       profiles: memberProfiles.filter((profile): profile is Profile => Boolean(profile)),
-      catalog,
+      catalog: buildHistory(catalog, allItems),
       household: household ?? null,
     };
   }, [listId]);

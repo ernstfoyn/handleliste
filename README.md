@@ -16,7 +16,10 @@ outbox. UI er på norsk, mobil først, med mørk modus etter systeminnstilling.
 - Én liste kan deles med flere via en unik invitasjonslenke. Eier kan fjerne medlemmer.
 - Hurtigregistrering: Enter legger til og beholder fokus. Mengde og notat er valgfritt.
 - Autocomplete fra historikken mens du skriver, med prefikstreff → frekvens → sist brukt.
+- Historikken bygges fra alle lister du har tilgang til — også varer som aldri ble huket av.
 - «Ofte brukt» og «Nylig brukt» på listesiden for ett-trykks gjenopptak.
+- Automatisk kategorisering (grønnsaker, frukt, meieri, bakeri, kjøtt/fisk, tørrvarer, frys,
+  drikke, snacks, husholdning, annet) og gruppering i listen.
 - Ett trykk på hele raden huker av/på. Kjøpte varer havner nederst med strikethrough.
 - Slett vare med swipe/langt trykk eller egen knapp, med **Angre** i 5 sekunder.
 - «Rydd kjøpte varer» (historikken beholdes).
@@ -317,7 +320,7 @@ kjøres bevisst ikke i den enkle CI-jobben.
 - Push-varsler
 - AI-forslag
 - Betaling / abonnement
-- Varerekkefølge med drag-and-drop, kategorier og butikkseksjoner
+- Varerekkefølge med drag-and-drop, manuell kategorioverstyring og butikkseksjoner
 - Inkrementell synk (MVP gjør full pull; se DECISIONS)
 - Offline kø for invitasjoner, medlemsfjerning og profilendringer (krever nett)
 - Flere husholdninger per bruker i UI (datamodellen støtter det)

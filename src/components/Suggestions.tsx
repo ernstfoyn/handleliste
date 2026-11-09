@@ -1,4 +1,5 @@
 import { mostUsed, recentlyUsed } from '../lib/autocomplete';
+import { CATEGORY_META, inferCategory } from '../lib/categories';
 import type { CatalogEntry } from '../lib/types';
 
 const CHIP_SURFACES = [
@@ -44,6 +45,10 @@ function SuggestionRow({
             onClick={() => onPick(entry.displayName)}
             aria-label={`Legg til ${entry.displayName} fra ${title.toLocaleLowerCase('nb-NO')}`}
           >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${CATEGORY_META[inferCategory(entry.displayName)].dotClass}`}
+              aria-hidden="true"
+            />
             <span>{entry.displayName}</span>
             {entry.useCount > 1 ? (
               <span className="text-[11px] font-normal text-ink/35 dark:text-paper/40">

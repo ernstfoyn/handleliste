@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { addItem } from '../data/actions';
 import { rankSuggestions } from '../lib/autocomplete';
+import { CATEGORY_META, inferCategory } from '../lib/categories';
 import { toErrorMessage } from '../lib/errors';
 import type { CatalogEntry } from '../lib/types';
 import { useToast } from '../providers/ToastProvider';
@@ -30,6 +31,7 @@ export function QuickAdd({
   }, [catalog, name]);
 
   const dropdownOpen = !suggestionsDismissed && suggestions.length > 0 && name.trim().length > 0;
+  const inferredCategory = name.trim() ? inferCategory(name) : null;
 
   const focusInput = () => {
     window.requestAnimationFrame(() => inputRef.current?.focus());
@@ -216,7 +218,20 @@ export function QuickAdd({
           </svg>
           Mengde og notat
         </button>
-        {name.trim() ? <span className="text-xs text-paper/35">Enter for å legge til</span> : null}
+        <div className="flex items-center gap-3">
+          {inferredCategory ? (
+            <span className="flex items-center gap-1.5 text-xs text-paper/45">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${CATEGORY_META[inferredCategory].dotClass}`}
+                aria-hidden="true"
+              />
+              {CATEGORY_META[inferredCategory].label}
+            </span>
+          ) : null}
+          {name.trim() ? (
+            <span className="hidden text-xs text-paper/35 sm:inline">Enter for å legge til</span>
+          ) : null}
+        </div>
       </div>
 
       {detailsOpen ? (

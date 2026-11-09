@@ -61,6 +61,12 @@ Korte, bevisste valg for MVP-en. Dato: 2026-11-09.
   matches ikke. Dokumentert i README.
 - Autocomplete rangerer: prefikstreff → `use_count` → `last_used_at` → alfabetisk. Begge
   seksjonene «Ofte brukt» (`use_count >= 2`) og «Nylig brukt» (siste bruk) bruker samme data.
+- Historikken som vises er en sammenslåing av `item_catalog` (per husholdning) og **alle varer på
+  alle lister brukeren har tilgang til**. Det gjør at varer fra delte lister og varer som aldri ble
+  huket av også huskes. `buildHistory` er ren og enhetstestet.
+- Kategorier utledes fra varenavnet med nøkkelord i `lib/categories.ts` og grupperes i fast
+  rekkefølge. Det er bevisst ingen kategori-kolonne i databasen i denne versjonen; manuell
+  overstyring er neste steg. Samme regler brukes i hele UI, så kategorien er konsistent.
 
 ## Deling og sikkerhet
 

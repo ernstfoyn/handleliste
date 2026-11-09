@@ -9,6 +9,7 @@ import {
   restoreItems,
   toggleItem,
 } from '../data/actions';
+import { CATEGORY_META, groupByCategory } from '../lib/categories';
 import { formatRelativeTime, pluralize } from '../lib/format';
 import { toErrorMessage } from '../lib/errors';
 import type { Item } from '../lib/types';
@@ -84,6 +85,8 @@ export function ListPage() {
     .filter((item) => item.isChecked)
     .sort((a, b) => (b.checkedAt ?? b.updatedAt).localeCompare(a.checkedAt ?? a.updatedAt));
   const total = data.items.length;
+  const uncheckedGroups = groupByCategory(unchecked);
+  const checkedGroups = groupByCategory(checked);
   const updatedBy = list.updatedBy
     ? data.profiles.find((entry) => entry.id === list.updatedBy)?.displayName
     : null;
@@ -308,16 +311,32 @@ export function ListPage() {
                   Alt er kjøpt. Godt jobbet!
                 </div>
               ) : (
-                <ul className="space-y-2">
-                  {unchecked.map((item) => (
-                    <ItemRow
-                      key={item.id}
-                      item={item}
-                      onToggle={() => void handleToggle(item)}
-                      onDelete={() => void handleDelete(item)}
-                    />
+                <div className="space-y-5">
+                  {uncheckedGroups.map((group) => (
+                    <div key={group.category}>
+                      <h3 className="mb-2 flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45 dark:text-paper/45">
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${CATEGORY_META[group.category].dotClass}`}
+                          aria-hidden="true"
+                        />
+                        {CATEGORY_META[group.category].label}
+                        <span className="rounded-full bg-ink/5 px-2 py-0.5 text-[10px] font-medium tracking-normal text-ink/55 dark:bg-paper/10 dark:text-paper/55">
+                          {group.items.length}
+                        </span>
+                      </h3>
+                      <ul className="space-y-2">
+                        {group.items.map((item) => (
+                          <ItemRow
+                            key={item.id}
+                            item={item}
+                            onToggle={() => void handleToggle(item)}
+                            onDelete={() => void handleDelete(item)}
+                          />
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               )}
             </section>
 
@@ -338,16 +357,32 @@ export function ListPage() {
                     Rydd kjøpte varer
                   </button>
                 </div>
-                <ul className="space-y-2">
-                  {checked.map((item) => (
-                    <ItemRow
-                      key={item.id}
-                      item={item}
-                      onToggle={() => void handleToggle(item)}
-                      onDelete={() => void handleDelete(item)}
-                    />
+                <div className="space-y-5">
+                  {checkedGroups.map((group) => (
+                    <div key={group.category}>
+                      <h3 className="mb-2 flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/45 dark:text-paper/45">
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${CATEGORY_META[group.category].dotClass}`}
+                          aria-hidden="true"
+                        />
+                        {CATEGORY_META[group.category].label}
+                        <span className="rounded-full bg-ink/5 px-2 py-0.5 text-[10px] font-medium tracking-normal text-ink/55 dark:bg-paper/10 dark:text-paper/55">
+                          {group.items.length}
+                        </span>
+                      </h3>
+                      <ul className="space-y-2">
+                        {group.items.map((item) => (
+                          <ItemRow
+                            key={item.id}
+                            item={item}
+                            onToggle={() => void handleToggle(item)}
+                            onDelete={() => void handleDelete(item)}
+                          />
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </section>
             ) : null}
           </div>
