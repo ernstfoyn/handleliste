@@ -7,7 +7,7 @@ export function NotFoundPage() {
       <Brand />
       <div className="card mt-8 w-full max-w-sm p-6 text-center">
         <p className="eyebrow">404</p>
-        <h1 className="mt-2 font-display text-3xl font-semibold text-ink dark:text-paper">
+        <h1 className="mt-2 font-display text-3xl font-light text-ink dark:text-paper">
           Siden finnes ikke
         </h1>
         <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">

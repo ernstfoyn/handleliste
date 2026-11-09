@@ -216,9 +216,7 @@ export function QuickAdd({
           </svg>
           Mengde og notat
         </button>
-        {name.trim() ? (
-          <span className="text-xs text-paper/35">Enter for å legge til</span>
-        ) : null}
+        {name.trim() ? <span className="text-xs text-paper/35">Enter for å legge til</span> : null}
       </div>
 
       {detailsOpen ? (
@@ -227,7 +225,10 @@ export function QuickAdd({
           className="mt-2 grid gap-2 border-t border-white/10 pt-3 sm:grid-cols-[10rem_1fr]"
         >
           <div>
-            <label className="mb-1 block text-xs font-medium text-paper/50" htmlFor="quick-add-quantity">
+            <label
+              className="mb-1 block text-xs font-medium text-paper/50"
+              htmlFor="quick-add-quantity"
+            >
               Mengde
             </label>
             <input
@@ -241,7 +242,10 @@ export function QuickAdd({
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-paper/50" htmlFor="quick-add-note">
+            <label
+              className="mb-1 block text-xs font-medium text-paper/50"
+              htmlFor="quick-add-note"
+            >
               Notat
             </label>
             <input

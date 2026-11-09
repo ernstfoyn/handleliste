@@ -108,7 +108,7 @@ export function Dialog({
           <div>
             <h2
               id={titleId}
-              className="font-display text-3xl font-semibold tracking-tight text-ink dark:text-paper"
+              className="font-display text-3xl font-light tracking-tight text-ink dark:text-paper"
             >
               {title}
             </h2>

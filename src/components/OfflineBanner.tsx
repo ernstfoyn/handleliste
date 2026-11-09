@@ -33,7 +33,7 @@ export function OfflineBanner() {
     return (
       <div
         role="status"
-        className="sticky z-30 border-b border-amber-300/70 bg-amber-100/90 px-4 py-2 text-amber-950 backdrop-blur dark:border-amber-800/60 dark:bg-amber-950/50 dark:text-amber-100"
+        className="sticky z-30 border-b border-ink/10 bg-butter-100 px-4 py-2 text-ink backdrop-blur dark:border-white/10 dark:bg-butter-950 dark:text-butter-100"
         style={{ top: 'calc(4rem + env(safe-area-inset-top))' }}
       >
         <div className="mx-auto flex max-w-3xl items-start gap-2 text-sm">
@@ -51,7 +51,7 @@ export function OfflineBanner() {
     return (
       <div
         role="alert"
-        className="sticky z-30 border-b border-red-300/70 bg-red-50/95 px-4 py-2 text-red-950 backdrop-blur dark:border-red-900/60 dark:bg-red-950/50 dark:text-red-100"
+        className="sticky z-30 border-b border-ink/10 bg-blush-100 px-4 py-2 text-ink backdrop-blur dark:border-white/10 dark:bg-blush-950 dark:text-blush-100"
         style={{ top: 'calc(4rem + env(safe-area-inset-top))' }}
       >
         <div className="mx-auto flex max-w-3xl items-center gap-3 text-sm">
@@ -76,12 +76,12 @@ export function OfflineBanner() {
     return (
       <div
         role="status"
-        className="sticky z-30 border-b border-stone-200/80 bg-white/80 px-4 py-1.5 backdrop-blur dark:border-stone-800 dark:bg-stone-900/60"
+        className="sticky z-30 border-b border-ink/[0.06] bg-white/70 px-4 py-1.5 text-ink/55 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-paper/55"
         style={{ top: 'calc(4rem + env(safe-area-inset-top))' }}
       >
-        <div className="mx-auto flex max-w-3xl items-center gap-2 text-xs text-stone-600 dark:text-stone-300">
+        <div className="mx-auto flex max-w-3xl items-center gap-2 text-xs">
           <span
-            className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-500"
+            className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink dark:bg-paper"
             aria-hidden="true"
           />
           <span>Synkroniserer {pending === 1 ? '1 endring' : `${pending} endringer`} …</span>

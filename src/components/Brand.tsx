@@ -31,7 +31,7 @@ export function Brand({ to = '/', subtitle }: { to?: string; subtitle?: string }
     >
       <BrandMark />
       <span className="flex flex-col leading-tight">
-        <span className="font-display text-xl font-semibold tracking-tight text-ink dark:text-paper">
+        <span className="font-display text-xl font-normal tracking-tight text-ink dark:text-paper">
           Handlelista
         </span>
         {subtitle ? <span className="eyebrow mt-0.5">{subtitle}</span> : null}

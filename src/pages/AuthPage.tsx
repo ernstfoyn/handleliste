@@ -13,9 +13,7 @@ function Feature({ icon, title, children }: { icon: ReactNode; title: string; ch
         {icon}
       </span>
       <span>
-        <span className="block text-sm font-semibold text-ink dark:text-paper">
-          {title}
-        </span>
+        <span className="block text-sm font-semibold text-ink dark:text-paper">{title}</span>
         <span className="mt-0.5 block text-sm text-ink/55 dark:text-paper/55">{children}</span>
       </span>
     </li>
@@ -102,10 +100,10 @@ export function AuthPage({
             <span className="h-1.5 w-1.5 rounded-full bg-ink dark:bg-paper" aria-hidden="true" />
             Husker alt du handler
           </p>
-          <h1 className="mt-5 max-w-xl font-display text-5xl font-semibold leading-[0.96] tracking-tight text-ink dark:text-paper sm:text-6xl lg:text-7xl">
+          <h1 className="mt-5 max-w-xl font-display text-5xl font-light leading-[0.96] tracking-tight text-ink dark:text-paper sm:text-6xl lg:text-7xl">
             Felles handleliste.
             <br />
-            <em className="font-normal italic text-ink/55 dark:text-paper/55">Null glemte varer.</em>
+            <em className="font-light italic text-ink/55 dark:text-paper/55">Null glemte varer.</em>
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-ink/55 dark:text-paper/55 sm:text-lg">
             Skriv «mel», få «Melk» fra historikken, huk av med ett trykk og la resten av
@@ -227,7 +225,7 @@ export function AuthPage({
 
         <section className="mx-auto w-full max-w-md">
           <div className="card rounded-[32px] p-5 sm:p-8">
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-ink dark:text-paper">
+            <h2 className="font-display text-3xl font-light tracking-tight text-ink dark:text-paper">
               {embedded ? 'Logg inn for å bli med' : 'Kom i gang'}
             </h2>
             <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
@@ -265,7 +263,10 @@ export function AuthPage({
                 <form className="mt-5 space-y-3" onSubmit={(event) => void handleGuest(event)}>
                   <div>
                     <label className="label" htmlFor="guest-name">
-                      Navn <span className="font-normal text-ink/35 dark:text-paper/35">(valgfritt)</span>
+                      Navn{' '}
+                      <span className="font-normal text-ink/35 dark:text-paper/35">
+                        (valgfritt)
+                      </span>
                     </label>
                     <input
                       id="guest-name"

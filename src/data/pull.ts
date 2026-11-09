@@ -140,10 +140,7 @@ export async function pullAll(
       );
       const fallbackHouseholdId = [...myHouseholdIds][0];
       if (fallbackHouseholdId) {
-        const pendingListInserts = await db.outbox
-          .where('kind')
-          .equals('list.insert')
-          .toArray();
+        const pendingListInserts = await db.outbox.where('kind').equals('list.insert').toArray();
         for (const entry of pendingListInserts) {
           if (entry.kind !== 'list.insert') continue;
           if (myHouseholdIds.has(entry.payload.list.householdId)) continue;

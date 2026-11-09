@@ -8,11 +8,7 @@ const COLORS = [
 ] as const;
 
 function initials(name: string): string {
-  const words = name
-    .trim()
-    .split(/\s+/u)
-    .filter(Boolean)
-    .slice(0, 2);
+  const words = name.trim().split(/\s+/u).filter(Boolean).slice(0, 2);
   if (words.length === 0) return '?';
   return words.map((word) => word[0]?.toLocaleUpperCase('nb-NO') ?? '').join('');
 }

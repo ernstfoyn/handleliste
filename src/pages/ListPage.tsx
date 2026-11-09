@@ -164,16 +164,37 @@ export function ListPage() {
             to="/"
             className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-1 text-sm font-medium text-ink/55 hover:text-ink dark:text-paper/55 dark:hover:text-paper"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
               <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Alle lister
           </Link>
           <div className="flex items-center gap-1.5">
-            <button type="button" className="btn btn-primary min-h-11 px-4" onClick={() => setSettingsOpen(true)}>
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden="true">
+            <button
+              type="button"
+              className="btn btn-primary min-h-11 px-4"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.9"
+                aria-hidden="true"
+              >
                 <circle cx="12" cy="12" r="3.2" />
-                <path d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6" strokeLinecap="round" />
+                <path
+                  d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6"
+                  strokeLinecap="round"
+                />
               </svg>
               Del
             </button>
@@ -201,7 +222,7 @@ export function ListPage() {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <p className="eyebrow !text-ink/45 dark:!text-paper/45">Handleliste</p>
-                <h1 className="mt-2 break-words font-display text-[2.4rem] font-semibold leading-[0.94] tracking-tight text-ink dark:text-paper sm:text-5xl">
+                <h1 className="mt-2 break-words font-display text-[2.4rem] font-light leading-[0.94] tracking-tight text-ink dark:text-paper sm:text-5xl">
                   {list.name}
                 </h1>
                 <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
@@ -230,7 +251,10 @@ export function ListPage() {
               </span>
             </div>
             {total > 0 ? (
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink/10 dark:bg-paper/15" aria-hidden="true">
+              <div
+                className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink/10 dark:bg-paper/15"
+                aria-hidden="true"
+              >
                 <div
                   className="h-full rounded-full bg-ink transition-[width] duration-300 dark:bg-paper"
                   style={{ width: `${percent}%` }}
@@ -243,7 +267,11 @@ export function ListPage() {
         {list.archivedAt ? (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-[22px] bg-butter-100 px-4 py-3 text-sm text-ink dark:bg-butter-950 dark:text-butter-100">
             <span>Denne listen er arkivert.</span>
-            <button type="button" className="btn btn-secondary min-h-11 px-3 text-xs" onClick={() => setSettingsOpen(true)}>
+            <button
+              type="button"
+              className="btn btn-secondary min-h-11 px-3 text-xs"
+              onClick={() => setSettingsOpen(true)}
+            >
               Gjenopprett
             </button>
           </div>
@@ -272,7 +300,9 @@ export function ListPage() {
                     {unchecked.length}
                   </span>
                 </h2>
-                <span className="text-[11px] text-ink/30 dark:text-paper/30">Ett trykk huker av</span>
+                <span className="text-[11px] text-ink/30 dark:text-paper/30">
+                  Ett trykk huker av
+                </span>
               </div>
               {unchecked.length === 0 ? (
                 <div className="rounded-[24px] bg-mint-100 px-4 py-5 text-sm text-ink dark:bg-mint-950 dark:text-mint-100">
@@ -281,7 +311,12 @@ export function ListPage() {
               ) : (
                 <ul className="space-y-2">
                   {unchecked.map((item) => (
-                    <ItemRow key={item.id} item={item} onToggle={() => void handleToggle(item)} onDelete={() => void handleDelete(item)} />
+                    <ItemRow
+                      key={item.id}
+                      item={item}
+                      onToggle={() => void handleToggle(item)}
+                      onDelete={() => void handleDelete(item)}
+                    />
                   ))}
                 </ul>
               )}
@@ -296,13 +331,22 @@ export function ListPage() {
                       {checked.length}
                     </span>
                   </h2>
-                  <button type="button" className="btn btn-ghost min-h-11 px-3 text-xs" onClick={() => void handleClearChecked()}>
+                  <button
+                    type="button"
+                    className="btn btn-ghost min-h-11 px-3 text-xs"
+                    onClick={() => void handleClearChecked()}
+                  >
                     Rydd kjøpte varer
                   </button>
                 </div>
                 <ul className="space-y-2">
                   {checked.map((item) => (
-                    <ItemRow key={item.id} item={item} onToggle={() => void handleToggle(item)} onDelete={() => void handleDelete(item)} />
+                    <ItemRow
+                      key={item.id}
+                      item={item}
+                      onToggle={() => void handleToggle(item)}
+                      onDelete={() => void handleDelete(item)}
+                    />
                   ))}
                 </ul>
               </section>

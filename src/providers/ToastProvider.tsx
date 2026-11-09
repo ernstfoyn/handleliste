@@ -72,13 +72,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={toast.id}
             role="status"
-            className="pointer-events-auto flex min-h-12 w-full max-w-md animate-toast-in items-center justify-between gap-4 rounded-2xl bg-stone-900 px-4 py-2.5 text-sm text-white shadow-lift dark:bg-stone-100 dark:text-stone-900"
+            className="pointer-events-auto flex min-h-12 w-full max-w-md animate-toast-in items-center justify-between gap-4 rounded-full bg-ink px-5 py-2.5 text-sm text-paper shadow-lift dark:bg-paper dark:text-ink"
           >
             <span className="min-w-0 flex-1">{toast.message}</span>
             {toast.actionLabel && toast.onAction ? (
               <button
                 type="button"
-                className="min-h-11 shrink-0 rounded-xl px-3 font-semibold text-brand-200 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 dark:text-brand-700"
+                className="min-h-11 shrink-0 rounded-full px-3 font-semibold text-mint-200 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-300 dark:text-mint-700"
                 onClick={() => {
                   dismiss(toast.id);
                   void Promise.resolve(toast.onAction?.()).catch((error: unknown) => {

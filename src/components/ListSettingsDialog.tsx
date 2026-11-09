@@ -172,7 +172,7 @@ export function ListSettingsDialog({
       size="lg"
     >
       {!isOwner ? (
-        <p className="rounded-xl bg-stone-100 px-3 py-2 text-sm text-stone-600 dark:bg-stone-800/70 dark:text-stone-300">
+        <p className="rounded-2xl bg-ink/5 px-3 py-2 text-sm text-ink/55 dark:bg-white/5 dark:text-paper/55">
           Du er medlem. Eier kan invitere, fjerne medlemmer og slette listen.
         </p>
       ) : null}
@@ -196,10 +196,10 @@ export function ListSettingsDialog({
       </form>
 
       <section
-        className="mt-6 border-t border-stone-200 pt-5 dark:border-stone-800"
+        className="mt-6 border-t border-ink/10 pt-5 dark:border-white/10"
         aria-labelledby="share-heading"
       >
-        <h3 id="share-heading" className="font-semibold text-stone-900 dark:text-stone-50">
+        <h3 id="share-heading" className="font-semibold text-ink dark:text-paper">
           Del med flere
         </h3>
         <p className="meta mt-1">
@@ -256,14 +256,16 @@ export function ListSettingsDialog({
             return (
               <li
                 key={member.userId}
-                className="flex min-h-12 items-center gap-2.5 rounded-xl bg-stone-50 px-2.5 dark:bg-stone-800/50"
+                className="flex min-h-12 items-center gap-2.5 rounded-2xl bg-ink/5 px-2.5 dark:bg-white/5"
               >
                 <Avatar id={member.userId} name={label} size="sm" />
-                <span className="min-w-0 flex-1 truncate text-sm font-medium text-stone-800 dark:text-stone-100">
+                <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink dark:text-paper">
                   {label}
-                  {isMe ? <span className="font-normal text-stone-500"> (deg)</span> : null}
+                  {isMe ? (
+                    <span className="font-normal text-ink/35 dark:text-paper/35"> (deg)</span>
+                  ) : null}
                 </span>
-                <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-stone-500 shadow-sm dark:bg-stone-900 dark:text-stone-300">
+                <span className="rounded-full bg-white/70 px-2 py-0.5 text-[11px] font-semibold text-ink/55 shadow-sm dark:bg-white/10 dark:text-paper/60">
                   {member.role === 'owner' ? 'Eier' : 'Medlem'}
                 </span>
                 {isOwner && !isMe && member.role !== 'owner' ? (
@@ -285,7 +287,7 @@ export function ListSettingsDialog({
       {message ? (
         <p
           role="status"
-          className="mt-4 rounded-xl bg-brand-50 px-3 py-2 text-sm text-brand-900 dark:bg-brand-950/60 dark:text-brand-100"
+          className="mt-4 rounded-2xl bg-mint-100 px-3 py-2 text-sm text-ink dark:bg-mint-950 dark:text-mint-100"
         >
           {message}
         </p>
@@ -293,20 +295,17 @@ export function ListSettingsDialog({
       {error ? (
         <p
           role="alert"
-          className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200"
+          className="mt-4 rounded-2xl bg-blush-100 px-3 py-2 text-sm text-blush-700 dark:bg-blush-950 dark:text-blush-100"
         >
           {error}
         </p>
       ) : null}
 
       <section
-        className="mt-6 border-t border-stone-200 pt-5 dark:border-stone-800"
+        className="mt-6 border-t border-ink/10 pt-5 dark:border-white/10"
         aria-labelledby="danger-heading"
       >
-        <h3
-          id="danger-heading"
-          className="text-sm font-semibold text-stone-700 dark:text-stone-300"
-        >
+        <h3 id="danger-heading" className="text-sm font-semibold text-ink/70 dark:text-paper/70">
           Lister
         </h3>
         <div className="mt-2 flex flex-wrap gap-2">
@@ -330,8 +329,8 @@ export function ListSettingsDialog({
           ) : null}
         </div>
         {confirmDelete ? (
-          <div className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 dark:border-red-900/60 dark:bg-red-950/40">
-            <p className="text-sm text-red-900 dark:text-red-100">
+          <div className="mt-3 rounded-2xl bg-blush-100 p-3 text-blush-700 dark:bg-blush-950 dark:text-blush-100">
+            <p className="text-sm">
               Slette «{list.name}» for alle? Varene blir liggende i historikken, men listen
               forsvinner for alle medlemmer.
             </p>

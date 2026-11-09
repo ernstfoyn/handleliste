@@ -20,6 +20,7 @@
     "supabase:reset": "npx --yes supabase db reset"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
     "@supabase/supabase-js": "^2.119.0",
     "dexie": "^4.4.7",
     "dexie-react-hooks": "^4.4.0",

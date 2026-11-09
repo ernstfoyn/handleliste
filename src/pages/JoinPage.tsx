@@ -81,7 +81,7 @@ export function JoinPage() {
               <div className="mx-auto flex h-14 w-14 animate-pulse items-center justify-center rounded-[20px] bg-mint-100 dark:bg-mint-950">
                 <BrandMark className="h-9 w-9" />
               </div>
-              <h1 className="mt-4 font-display text-3xl font-semibold text-ink dark:text-paper">
+              <h1 className="mt-4 font-display text-3xl font-light text-ink dark:text-paper">
                 Blir med i listen …
               </h1>
               <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
@@ -106,7 +106,7 @@ export function JoinPage() {
                   />
                 </svg>
               </div>
-              <h1 className="mt-4 font-display text-3xl font-semibold text-ink dark:text-paper">
+              <h1 className="mt-4 font-display text-3xl font-light text-ink dark:text-paper">
                 Kunne ikke bli med
               </h1>
               <p role="alert" className="mt-2 text-sm text-ink/55 dark:text-paper/55">

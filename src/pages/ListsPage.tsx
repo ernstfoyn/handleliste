@@ -47,14 +47,20 @@ function ListCard({ entry, now }: { entry: ListOverviewItem; now: number }) {
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-paper transition-transform group-hover:-rotate-6 dark:bg-paper dark:text-ink"
           aria-hidden="true"
         >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       </div>
 
       <div className="mt-7">
-        <h2 className="break-words font-display text-[1.7rem] font-semibold leading-[1.05] tracking-tight">
+        <h2 className="break-words font-display text-[1.7rem] font-normal leading-[1.05] tracking-tight">
           {list.name}
         </h2>
         <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
@@ -146,10 +152,10 @@ export function ListsPage() {
         />
         <div className="relative">
           <p className="eyebrow !text-ink/45 dark:!text-paper/45">Felles handleliste</p>
-          <h1 className="mt-3 font-display text-[2.7rem] font-semibold leading-[0.92] tracking-tight sm:text-6xl">
+          <h1 className="mt-3 font-display text-[2.7rem] font-light leading-[0.92] tracking-tight sm:text-6xl">
             {firstName ? `Hei, ${firstName}.` : 'Hei.'}
             <br />
-            <em className="font-normal italic text-ink/55 dark:text-paper/55">
+            <em className="font-light italic text-ink/55 dark:text-paper/55">
               Hva skal vi handle?
             </em>
           </h1>
@@ -165,7 +171,14 @@ export function ListsPage() {
               onClick={() => setNewListOpen(true)}
               disabled={!ready}
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                aria-hidden="true"
+              >
                 <path d="M12 5v14M5 12h14" strokeLinecap="round" />
               </svg>
               Ny liste
@@ -190,7 +203,9 @@ export function ListsPage() {
           <>
             <div className="mb-3 flex items-baseline justify-between">
               <h2 className="eyebrow">Dine lister</h2>
-              <span className="text-[11px] text-ink/35 dark:text-paper/35">{activeCount} aktive</span>
+              <span className="text-[11px] text-ink/35 dark:text-paper/35">
+                {activeCount} aktive
+              </span>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -225,7 +240,14 @@ export function ListsPage() {
                       {overview.archived.length}
                     </span>
                   </span>
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
                     <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </summary>
@@ -288,15 +310,27 @@ export function ListsPage() {
             />
           </div>
           {createError ? (
-            <p role="alert" className="rounded-2xl bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200">
+            <p
+              role="alert"
+              className="rounded-2xl bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200"
+            >
               {createError}
             </p>
           ) : null}
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <button type="button" className="btn btn-secondary" onClick={() => setNewListOpen(false)} disabled={creating}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setNewListOpen(false)}
+              disabled={creating}
+            >
               Avbryt
             </button>
-            <button type="submit" className="btn btn-primary" disabled={creating || !newListName.trim()}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={creating || !newListName.trim()}
+            >
               {creating ? 'Oppretter …' : 'Opprett liste'}
             </button>
           </div>

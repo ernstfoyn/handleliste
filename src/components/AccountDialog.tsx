@@ -91,13 +91,13 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
       title="Konto"
       description="Navnet vises for andre i listen."
     >
-      <div className="flex items-center gap-3 rounded-2xl bg-stone-100/80 p-3 dark:bg-stone-800/60">
+      <div className="flex items-center gap-3 rounded-[24px] bg-ink/5 p-3 dark:bg-white/5">
         <Avatar name={profile?.displayName ?? 'Gjest'} id={user.id} size="lg" />
         <div className="min-w-0">
-          <p className="truncate font-semibold text-stone-900 dark:text-stone-50">
+          <p className="truncate font-semibold text-ink dark:text-paper">
             {profile?.displayName ?? (anonymous ? 'Gjest' : (user.email ?? 'Bruker'))}
           </p>
-          <p className="truncate text-sm text-stone-500 dark:text-stone-400">
+          <p className="meta truncate">
             {anonymous ? 'Anonym gjestekonto' : (user.email ?? 'Innlogget')}
           </p>
         </div>
@@ -124,10 +124,10 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
 
       {anonymous ? (
         <form
-          className="mt-6 border-t border-stone-200 pt-5 dark:border-stone-800"
+          className="mt-6 border-t border-ink/10 pt-5 dark:border-white/10"
           onSubmit={handleUpgrade}
         >
-          <h3 className="font-semibold text-stone-900 dark:text-stone-50">Koble til e-post</h3>
+          <h3 className="font-semibold text-ink dark:text-paper">Koble til e-post</h3>
           <p className="meta mt-1">
             Oppgrader gjestekontoen slik at du kan logge inn på nye enheter. Innholdet blir med.
           </p>
@@ -159,7 +159,7 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
       {message ? (
         <p
           role="status"
-          className="mt-4 rounded-xl bg-brand-50 px-3 py-2 text-sm text-brand-900 dark:bg-brand-950/60 dark:text-brand-100"
+          className="mt-4 rounded-2xl bg-mint-100 px-3 py-2 text-sm text-ink dark:bg-mint-950 dark:text-mint-100"
         >
           {message}
         </p>
@@ -167,13 +167,13 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
       {error ? (
         <p
           role="alert"
-          className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200"
+          className="mt-4 rounded-2xl bg-blush-100 px-3 py-2 text-sm text-blush-700 dark:bg-blush-950 dark:text-blush-100"
         >
           {error}
         </p>
       ) : null}
 
-      <div className="mt-6 flex items-center justify-between border-t border-stone-200 pt-4 dark:border-stone-800">
+      <div className="mt-6 flex items-center justify-between border-t border-ink/10 pt-4 dark:border-white/10">
         <p className="meta">Logg ut sletter ikke listen eller historikken.</p>
         <button
           type="button"

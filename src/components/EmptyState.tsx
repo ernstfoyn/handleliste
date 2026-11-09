@@ -37,9 +37,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center rounded-[30px] bg-white/55 px-6 py-10 text-center shadow-card dark:bg-white/[0.04]">
       <BasketIllustration />
-      <h2 className="mt-3 font-display text-2xl font-semibold text-ink dark:text-paper">
-        {title}
-      </h2>
+      <h2 className="mt-3 font-display text-2xl font-normal text-ink dark:text-paper">{title}</h2>
       <p className="mt-1.5 max-w-sm text-sm text-ink/55 dark:text-paper/55">{description}</p>
       {children ? <div className="mt-5">{children}</div> : null}
     </div>
