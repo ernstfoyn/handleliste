@@ -135,6 +135,10 @@ export function QuickAdd({
               setHistoryOpen(true);
               setActiveIndex(-1);
             }}
+            onClick={() => {
+              setSuggestionsDismissed(false);
+              setHistoryOpen(true);
+            }}
             onKeyDown={handleKeyDown}
             onFocus={() => {
               setSuggestionsDismissed(false);
@@ -160,6 +164,36 @@ export function QuickAdd({
             enterKeyHint="done"
             maxLength={200}
           />
+          {catalog.length > 0 ? (
+            <button
+              type="button"
+              className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-paper/45 transition-colors hover:bg-white/10 hover:text-paper focus-visible:bg-white/10 focus-visible:text-paper"
+              aria-label="Vis tidligere varer"
+              aria-expanded={dropdownOpen}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                setSuggestionsDismissed(false);
+                setHistoryOpen(true);
+                inputRef.current?.focus();
+              }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3.5 12a8.5 8.5 0 1 0 2.8-6.3M3.5 4.5V10h5.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path d="M12 7.5v5l3.2 1.9" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          ) : null}
           {dropdownOpen ? (
             <div className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-3xl border border-ink/10 bg-paper text-ink shadow-card dark:border-white/10 dark:bg-[#1A1A1A] dark:text-paper">
               <div className="flex items-center justify-between gap-2 border-b border-ink/[0.06] px-3.5 py-2 dark:border-white/10">
@@ -263,7 +297,9 @@ export function QuickAdd({
             <span className="hidden text-xs text-paper/35 sm:inline">Enter for å legge til</span>
           ) : catalog.length > 0 ? (
             <span className="text-xs text-paper/35">Trykk for historikk</span>
-          ) : null}
+          ) : (
+            <span className="text-xs text-paper/30">Ingen historikk ennå</span>
+          )}
         </div>
       </div>
 
