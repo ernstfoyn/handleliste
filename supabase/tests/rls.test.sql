@@ -2,7 +2,7 @@ begin;
 
 set search_path = public, extensions;
 
-select plan(12);
+select plan(13);
 
 -- To brukere. Auth-triggeren oppretter profil, husholdning og standardliste.
 insert into auth.users (
@@ -194,6 +194,24 @@ select throws_ok(
   'P0001',
   null,
   'medlem kan ikke slette listen'
+);
+
+-- Tilbake til eier: eieren skal kunne myk-slette listen.
+reset role;
+select set_config(
+  'request.jwt.claims',
+  json_build_object('sub', '00000000-0000-0000-0000-000000000001', 'role', 'authenticated')::text,
+  true
+);
+set local role authenticated;
+
+select lives_ok(
+  $$
+    update public.lists
+    set deleted_at = now()
+    where id = '10000000-0000-0000-0000-000000000001'
+  $$,
+  'eier kan slette listen'
 );
 
 select * from finish();
