@@ -333,6 +333,10 @@ kjøres bevisst ikke i den enkle CI-jobben.
   `supabase/config.toml`, cloud i Dashboard).
 - **Magic link kommer ikke**: sjekk Mailpit på <http://localhost:54324>, og at redirect-URL er
   tillatt i Supabase.
+- **«Email rate limit exceeded»**: Supabase sin innebygde e-posttjeneste har strenge grenser
+  (typisk et par e-poster i timen). Vent, eller sett opp egen SMTP under
+  **Authentication → SMTP Settings**. For rask testing på en ny enhet kan du heller bruke
+  invitasjonslenken og bli med som gjest.
 - **Realtime virker ikke**: sjekk at migrasjonen `20261109090400_realtime.sql` er kjørt
   (`npx supabase db reset`) og at tabellene er med i `supabase_realtime`-publikasjonen.
 - **RLS-testen feiler på pgtap**: `supabase test db` krever at Supabase lokalt kjører.
