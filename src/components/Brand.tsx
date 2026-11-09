@@ -9,7 +9,15 @@ export function BrandMark({ className = 'h-9 w-9' }: { className?: string }) {
       aria-label="Handlelista"
       focusable="false"
     >
-      <rect width="64" height="64" rx="17" fill="#111111" />
+      <rect
+        width="64"
+        height="64"
+        rx="17"
+        fill="#111111"
+        stroke="#F7F3EC"
+        strokeOpacity="0.2"
+        strokeWidth="1.5"
+      />
       <path
         d="M18.5 33.5 27.5 42.5 46 23.5"
         fill="none"

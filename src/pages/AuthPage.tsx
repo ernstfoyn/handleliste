@@ -6,10 +6,31 @@ import { SetupNotice } from '../components/SetupNotice';
 import { SplashScreen } from '../components/SplashScreen';
 import { Brand } from '../components/Brand';
 
-function Feature({ icon, title, children }: { icon: ReactNode; title: string; children: string }) {
+type FeatureTone = 'mint' | 'blush' | 'lilac' | 'butter';
+
+const FEATURE_TONES: Record<FeatureTone, string> = {
+  mint: 'bg-mint-100 text-mint-700 dark:bg-mint-950 dark:text-mint-100',
+  blush: 'bg-blush-100 text-blush-700 dark:bg-blush-950 dark:text-blush-100',
+  lilac: 'bg-lilac-100 text-lilac-700 dark:bg-lilac-950 dark:text-lilac-100',
+  butter: 'bg-butter-100 text-butter-700 dark:bg-butter-950 dark:text-butter-100',
+};
+
+function Feature({
+  icon,
+  title,
+  children,
+  tone,
+}: {
+  icon: ReactNode;
+  title: string;
+  children: string;
+  tone: FeatureTone;
+}) {
   return (
     <li className="flex gap-3">
-      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink dark:bg-white/10 dark:text-paper">
+      <span
+        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${FEATURE_TONES[tone]}`}
+      >
         {icon}
       </span>
       <span>
@@ -111,6 +132,7 @@ export function AuthPage({
           </p>
           <ul className="mt-8 grid max-w-lg gap-4 sm:grid-cols-2">
             <Feature
+              tone="mint"
               title="Husker varene"
               icon={
                 <svg
@@ -132,6 +154,7 @@ export function AuthPage({
               Ofte og nylig brukt, rett i listen.
             </Feature>
             <Feature
+              tone="butter"
               title="Ett trykk"
               icon={
                 <svg
@@ -149,6 +172,7 @@ export function AuthPage({
               Hele raden hukes av. Angre i fem sekunder.
             </Feature>
             <Feature
+              tone="lilac"
               title="Delt i sanntid"
               icon={
                 <svg
@@ -170,6 +194,7 @@ export function AuthPage({
               Alle ser endringer uten refresh.
             </Feature>
             <Feature
+              tone="blush"
               title="Fungerer offline"
               icon={
                 <svg

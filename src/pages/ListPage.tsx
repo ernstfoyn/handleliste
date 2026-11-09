@@ -190,11 +190,10 @@ export function ListPage() {
                 strokeWidth="1.9"
                 aria-hidden="true"
               >
-                <circle cx="12" cy="12" r="3.2" />
-                <path
-                  d="M12 3.5v2.2M12 18.3v2.2M20.5 12h-2.2M5.7 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6"
-                  strokeLinecap="round"
-                />
+                <circle cx="18" cy="5" r="2.6" />
+                <circle cx="6" cy="12" r="2.6" />
+                <circle cx="18" cy="19" r="2.6" />
+                <path d="M8.4 13.3l7.2 4.2M15.6 6.5 8.4 10.7" strokeLinecap="round" />
               </svg>
               Del
             </button>
