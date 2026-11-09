@@ -84,6 +84,24 @@ export async function resetLocalData(): Promise<void> {
   await db.delete();
 }
 
+export async function exportLocalBackup(): Promise<Blob> {
+  const [lists, items, catalog, outbox] = await Promise.all([
+    db.lists.toArray(),
+    db.items.toArray(),
+    db.catalog.toArray(),
+    db.outbox.toArray(),
+  ]);
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    lists,
+    items,
+    catalog,
+    outbox,
+  };
+  return new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+}
+
 export function prepareLocalUser(userId: string): Promise<void> {
   if (preparePromise) return preparePromise;
 

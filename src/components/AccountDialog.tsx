@@ -166,6 +166,9 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
               onChange={(event) => setEmail(event.target.value)}
               placeholder="navn@eksempel.no"
               autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               required
             />
           </div>
@@ -182,6 +185,9 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
               onChange={(event) => setUpgradePassword(event.target.value)}
               placeholder="Minst 8 tegn"
               autoComplete="new-password"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               minLength={8}
             />
             <p className="mt-1 text-[11px] text-ink/40 dark:text-paper/40">
@@ -220,6 +226,9 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
               onChange={(event) => setNewPassword(event.target.value)}
               placeholder="Minst 8 tegn"
               autoComplete="new-password"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               minLength={8}
               required
             />

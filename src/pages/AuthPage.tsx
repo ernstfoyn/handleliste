@@ -396,6 +396,9 @@ export function AuthPage({
                           onChange={(event) => setEmail(event.target.value)}
                           placeholder="navn@eksempel.no"
                           autoComplete="email"
+                          autoCapitalize="none"
+                          autoCorrect="off"
+                          spellCheck={false}
                           required
                         />
                       </div>
@@ -435,6 +438,9 @@ export function AuthPage({
                             onChange={(event) => setPasswordConfirm(event.target.value)}
                             placeholder="Gjenta passordet"
                             autoComplete="new-password"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            spellCheck={false}
                             minLength={8}
                             required
                           />
@@ -498,6 +504,9 @@ export function AuthPage({
                         onChange={(event) => setEmail(event.target.value)}
                         placeholder="navn@eksempel.no"
                         autoComplete="email"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         required
                       />
                     </div>

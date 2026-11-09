@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { syncEngine } from '../data/engine';
-import { resetLocalData } from '../lib/db';
+import { exportLocalBackup, resetLocalData } from '../lib/db';
 import { useSyncStore } from '../lib/sync-store';
 import { useDelayedFlag } from '../hooks/useDelayedFlag';
 
@@ -31,11 +31,32 @@ export function OfflineBanner() {
   const paused = useSyncStore((state) => state.paused);
   const showSyncing = useDelayedFlag(pending > 0 && online && phase === 'syncing', 600);
   const [resetting, setResetting] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleBackup = async () => {
+    setExporting(true);
+    try {
+      const blob = await exportLocalBackup();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `handlelista-sikkerhetskopi-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Kunne ikke lage sikkerhetskopi', error);
+      window.alert('Kunne ikke lage sikkerhetskopi. Prøv igjen.');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const handleReset = async () => {
     if (
       !window.confirm(
-        'Nullstille lokal kø? Ulagrede endringer går tapt, men alt som er lagret på serveren hentes på nytt.',
+        'Nullstille lokal kø? Dette sletter lokale lister som ikke er synket. Last ned sikkerhetskopi først hvis du vil ta vare på dem. Fortsette?',
       )
     ) {
       return;
@@ -91,6 +112,14 @@ export function OfflineBanner() {
                 onClick={() => syncEngine.retry()}
               >
                 Prøv igjen
+              </button>
+              <button
+                type="button"
+                className="min-h-11 px-1 text-xs font-medium text-ink/55 underline-offset-4 hover:text-ink hover:underline disabled:opacity-50 dark:text-paper/55 dark:hover:text-paper"
+                onClick={() => void handleBackup()}
+                disabled={exporting}
+              >
+                {exporting ? 'Lager …' : 'Last ned sikkerhetskopi'}
               </button>
               <button
                 type="button"
