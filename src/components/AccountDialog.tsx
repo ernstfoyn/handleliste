@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { updateProfileName } from '../data/actions';
 import { toErrorMessage } from '../lib/errors';
+import { forceAppUpdate } from '../lib/pwa';
 import { useMyProfile } from '../hooks/useMyProfile';
 import { useAuth } from '../providers/AuthProvider';
 import { useToast } from '../providers/ToastProvider';
@@ -18,6 +19,7 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
   const [email, setEmail] = useState('');
   const [upgradePassword, setUpgradePassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [updatingApp, setUpdatingApp] = useState(false);
   const [busy, setBusy] = useState<'name' | 'upgrade' | 'password' | 'signout' | null>(null);
   const wasOpen = useRef(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -29,6 +31,7 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
       setEmail('');
       setUpgradePassword('');
       setNewPassword('');
+      setUpdatingApp(false);
       setMessage(null);
       setError(null);
       setBusy(null);
@@ -90,6 +93,21 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
       setError(toErrorMessage(passwordError));
     } finally {
       setBusy(null);
+    }
+  };
+
+  const handleUpdateApp = async () => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      setError('Du må være online for å oppdatere appen.');
+      return;
+    }
+    setUpdatingApp(true);
+    setError(null);
+    try {
+      await forceAppUpdate();
+    } catch (updateError) {
+      setError(toErrorMessage(updateError));
+      setUpdatingApp(false);
     }
   };
 
@@ -259,6 +277,21 @@ export function AccountDialog({ open, onClose }: { open: boolean; onClose: () =>
           {error}
         </p>
       ) : null}
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 pt-4 dark:border-white/10">
+        <div>
+          <p className="text-sm font-medium text-ink dark:text-paper">Appversjon</p>
+          <p className="meta">Ser du ikke nye endringer i den installerte appen?</p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => void handleUpdateApp()}
+          disabled={updatingApp}
+        >
+          {updatingApp ? 'Oppdaterer …' : 'Oppdater appen'}
+        </button>
+      </div>
 
       <div className="mt-6 flex items-center justify-between border-t border-ink/10 pt-4 dark:border-white/10">
         <p className="meta">Logg ut sletter ikke listen eller historikken.</p>

@@ -22,15 +22,22 @@ export function QuickAdd({
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [suggestionsDismissed, setSuggestionsDismissed] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const { showToast } = useToast();
 
-  const suggestions = useMemo(() => {
-    if (!name.trim()) return [];
-    return rankSuggestions(catalog, name, { limit: 6 });
+  const options = useMemo(() => {
+    const query = name.trim();
+    if (query) return rankSuggestions(catalog, query, { limit: 500 });
+    return [...catalog].sort(
+      (a, b) =>
+        b.useCount - a.useCount ||
+        new Date(b.lastUsedAt).getTime() - new Date(a.lastUsedAt).getTime() ||
+        a.displayName.localeCompare(b.displayName, 'nb-NO'),
+    );
   }, [catalog, name]);
 
-  const dropdownOpen = !suggestionsDismissed && suggestions.length > 0 && name.trim().length > 0;
+  const dropdownOpen = historyOpen && !suggestionsDismissed && options.length > 0;
   const inferredCategory = name.trim() ? inferCategory(name) : null;
 
   const focusInput = () => {
@@ -43,6 +50,7 @@ export function QuickAdd({
     setNote('');
     setActiveIndex(-1);
     setSuggestionsDismissed(false);
+    setHistoryOpen(true);
     setDetailsOpen(false);
     focusInput();
   };
@@ -69,8 +77,8 @@ export function QuickAdd({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (activeIndex >= 0 && suggestions[activeIndex]) {
-      void submitName(suggestions[activeIndex].displayName);
+    if (activeIndex >= 0 && options[activeIndex]) {
+      void submitName(options[activeIndex].displayName);
       return;
     }
     void submitName(name);
@@ -78,25 +86,29 @@ export function QuickAdd({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowDown') {
-      if (suggestions.length === 0) return;
+      if (options.length === 0) return;
       event.preventDefault();
+      setHistoryOpen(true);
       setSuggestionsDismissed(false);
-      setActiveIndex((current) => Math.min(current + 1, suggestions.length - 1));
+      setActiveIndex((current) => Math.min(current + 1, options.length - 1));
       return;
     }
     if (event.key === 'ArrowUp') {
-      if (suggestions.length === 0) return;
+      if (options.length === 0) return;
       event.preventDefault();
+      setHistoryOpen(true);
       setActiveIndex((current) => Math.max(current - 1, -1));
       return;
     }
     if (event.key === 'Escape') {
       setActiveIndex(-1);
       setSuggestionsDismissed(true);
+      setHistoryOpen(false);
       return;
     }
     if (event.key === 'Tab') {
       setActiveIndex(-1);
+      setHistoryOpen(false);
     }
   };
 
@@ -120,14 +132,19 @@ export function QuickAdd({
             onChange={(event) => {
               setName(event.target.value);
               setSuggestionsDismissed(false);
+              setHistoryOpen(true);
               setActiveIndex(-1);
             }}
             onKeyDown={handleKeyDown}
-            onFocus={() => setSuggestionsDismissed(false)}
+            onFocus={() => {
+              setSuggestionsDismissed(false);
+              setHistoryOpen(true);
+            }}
             onBlur={() => {
               window.setTimeout(() => {
                 setActiveIndex(-1);
                 setSuggestionsDismissed(true);
+                setHistoryOpen(false);
               }, 120);
             }}
             role="combobox"
@@ -136,46 +153,60 @@ export function QuickAdd({
             aria-expanded={dropdownOpen}
             aria-controls="quick-add-suggestions"
             aria-activedescendant={
-              activeIndex >= 0 && suggestions[activeIndex]
-                ? `quick-add-option-${suggestions[activeIndex].id}`
+              activeIndex >= 0 && options[activeIndex]
+                ? `quick-add-option-${options[activeIndex].id}`
                 : undefined
             }
             enterKeyHint="done"
             maxLength={200}
           />
           {dropdownOpen ? (
-            <ul
-              id="quick-add-suggestions"
-              role="listbox"
-              aria-label="Forslag fra historikken"
-              className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-3xl border border-ink/10 bg-paper py-1 text-ink shadow-card dark:border-white/10 dark:bg-[#1A1A1A] dark:text-paper"
-            >
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={suggestion.id}
-                  id={`quick-add-option-${suggestion.id}`}
-                  role="option"
-                  aria-selected={activeIndex === index}
-                  className={`flex min-h-12 cursor-pointer items-center justify-between gap-3 px-3.5 text-left text-sm ${
-                    activeIndex === index
-                      ? 'bg-mint-100 text-ink dark:bg-mint-950 dark:text-mint-100'
-                      : 'text-ink/80 dark:text-paper/80'
-                  }`}
-                  onMouseDown={(event) => event.preventDefault()}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onClick={() => void submitName(suggestion.displayName)}
-                >
-                  <span className="truncate font-medium">{suggestion.displayName}</span>
-                  <span className="shrink-0 text-xs text-ink/45 dark:text-paper/45">
-                    {suggestion.useCount === 0
-                      ? 'Nylig'
-                      : suggestion.useCount === 1
-                        ? '1 gang'
-                        : `${suggestion.useCount} ganger`}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <div className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-3xl border border-ink/10 bg-paper text-ink shadow-card dark:border-white/10 dark:bg-[#1A1A1A] dark:text-paper">
+              <div className="flex items-center justify-between gap-2 border-b border-ink/[0.06] px-3.5 py-2 dark:border-white/10">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink/40 dark:text-paper/40">
+                  {name.trim() ? 'Forslag' : 'Alle tidligere varer'}
+                </span>
+                <span className="text-[10px] text-ink/30 dark:text-paper/30">{options.length}</span>
+              </div>
+              <ul
+                id="quick-add-suggestions"
+                role="listbox"
+                aria-label={name.trim() ? 'Forslag fra historikken' : 'Alle tidligere varer'}
+                className="max-h-[min(60vh,22rem)] overflow-y-auto py-1"
+              >
+                {options.map((suggestion, index) => (
+                  <li
+                    key={suggestion.id}
+                    id={`quick-add-option-${suggestion.id}`}
+                    role="option"
+                    aria-selected={activeIndex === index}
+                    className={`flex min-h-12 cursor-pointer items-center justify-between gap-3 px-3.5 text-left text-sm ${
+                      activeIndex === index
+                        ? 'bg-mint-100 text-ink dark:bg-mint-950 dark:text-mint-100'
+                        : 'text-ink/80 dark:text-paper/80'
+                    }`}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => void submitName(suggestion.displayName)}
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span
+                        className={`h-1.5 w-1.5 shrink-0 rounded-full ${CATEGORY_META[inferCategory(suggestion.displayName)].dotClass}`}
+                        aria-hidden="true"
+                      />
+                      <span className="truncate font-medium">{suggestion.displayName}</span>
+                    </span>
+                    <span className="shrink-0 text-xs text-ink/45 dark:text-paper/45">
+                      {suggestion.useCount === 0
+                        ? 'Nylig'
+                        : suggestion.useCount === 1
+                          ? '1 gang'
+                          : `${suggestion.useCount} ganger`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null}
         </div>
         <button
@@ -230,6 +261,8 @@ export function QuickAdd({
           ) : null}
           {name.trim() ? (
             <span className="hidden text-xs text-paper/35 sm:inline">Enter for å legge til</span>
+          ) : catalog.length > 0 ? (
+            <span className="text-xs text-paper/35">Trykk for historikk</span>
           ) : null}
         </div>
       </div>
