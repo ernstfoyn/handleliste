@@ -143,14 +143,42 @@ export async function pullAll(
         const pendingListInserts = await db.outbox.where('kind').equals('list.insert').toArray();
         for (const entry of pendingListInserts) {
           if (entry.kind !== 'list.insert') continue;
-          if (myHouseholdIds.has(entry.payload.list.householdId)) continue;
+          const current = entry.payload.list;
+          const householdId = myHouseholdIds.has(current.householdId)
+            ? current.householdId
+            : fallbackHouseholdId;
+          if (
+            current.householdId === householdId &&
+            current.createdBy === userId &&
+            current.updatedBy === userId
+          ) {
+            continue;
+          }
 
           const repairedList = {
-            ...entry.payload.list,
-            householdId: fallbackHouseholdId,
+            ...current,
+            householdId,
+            createdBy: userId,
+            updatedBy: userId,
           };
           await db.lists.put(repairedList);
           await db.outbox.put({ ...entry, payload: { list: repairedList } });
+        }
+
+        // Samme problem kan gjelde varer som ble lagt inn under en gammel konto.
+        const pendingItemInserts = await db.outbox.where('kind').equals('item.insert').toArray();
+        for (const entry of pendingItemInserts) {
+          if (entry.kind !== 'item.insert') continue;
+          const current = entry.payload.item;
+          if (current.createdBy === userId && current.updatedBy === userId) continue;
+
+          const repairedItem = {
+            ...current,
+            createdBy: userId,
+            updatedBy: userId,
+          };
+          await db.items.put(repairedItem);
+          await db.outbox.put({ ...entry, payload: { item: repairedItem } });
         }
       }
 

@@ -80,6 +80,10 @@ async function clearAllTables(): Promise<void> {
  * Sørger for at IndexedDB bare inneholder data for innlogget bruker.
  * Kalles før sync starter, slik at en annen bruker på samme enhet ikke ser gammel cache.
  */
+export async function resetLocalData(): Promise<void> {
+  await db.delete();
+}
+
 export function prepareLocalUser(userId: string): Promise<void> {
   if (preparePromise) return preparePromise;
 
